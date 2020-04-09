@@ -14,8 +14,8 @@ const cursor_02 = async () => {
     h: framesData[0].h
   }
   const defaultPosition = { x: 50, y: 50 }
-  const output = Canv.moveObj({ ...defaultPosition})({...size})
-  
+  const output = Canv.moveObj({ ...defaultPosition })({ ...size })
+
   const status = {
     constantLeft: {
       image: imgPerson,
@@ -30,7 +30,7 @@ const cursor_02 = async () => {
     runRight: {
       image: imgPersonFlip,
       velocity: { x: 1, y: 0 },
-      frame: tick =>  Canv.frameCalc(framesData, 8, 6, 7, true)(tick)
+      frame: tick => Canv.frameCalc(framesData, 8, 6, 7, true)(tick)
     },
     runLeft: {
       image: imgPerson,
@@ -67,13 +67,14 @@ const cursor_02 = async () => {
     }
   }))
   //
-  Canv.canvas.addEventListener(Canv.deviceTrigger().start, e => {
-    e.preventDefault()
-    const currentCharaX = (currentOutput.x + size.w / 2) * scale[0]
-    if (Canv.getTouchPosition(e).x > currentCharaX) loopAnimation(status.runRight)
-    if (Canv.getTouchPosition(e).x < currentCharaX) loopAnimation(status.runLeft)
-  }, { passive: false })
-  Canv.canvas.addEventListener(Canv.deviceTrigger().end, e => {
+  Canv.registerCanvasEvent(Canv.deviceTrigger().start, e => {
+      e.preventDefault()
+      const currentCharaX = (currentOutput.x + size.w / 2) * scale[0]
+      if (Canv.getTouchPosition(e).x > currentCharaX) loopAnimation(status.runRight)
+      if (Canv.getTouchPosition(e).x < currentCharaX) loopAnimation(status.runLeft)
+    }, { passive: false }
+  )
+  Canv.registerCanvasEvent(Canv.deviceTrigger().end, e => {
     const currentCharaX = (currentOutput.x + size.w / 2) * scale[0]
     if (Canv.getTouchPosition(e).x > currentCharaX) loopAnimation(status.constantRight)
     if (Canv.getTouchPosition(e).x < currentCharaX) loopAnimation(status.constantLeft)

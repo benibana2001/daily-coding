@@ -188,14 +188,13 @@ const yasumijikan = async () => {
   }
   // Attach Event handler
   const attachCharaEvents = () => {
-    Canv.canvas.addEventListener(Canv.deviceTrigger().start, deviceStartHandler, { passive: false })
-    Canv.canvas.addEventListener(Canv.deviceTrigger().end, deviceEndHandler)
+    Canv.registerCanvasEvent(Canv.deviceTrigger().start, deviceStartHandler, { passive: false })
+    Canv.registerCanvasEvent(Canv.deviceTrigger().end, deviceEndHandler)
     Canv.registerEvent('keydown', keydownHandler)
     Canv.registerEvent('keyup', keyupHandler)
   }
   const detachCharaEvents = () => {
-    Canv.canvas.removeEventListener(Canv.deviceTrigger().start, deviceStartHandler)
-    Canv.canvas.removeEventListener(Canv.deviceTrigger().end, deviceEndHandler)
+    Canv.removeCanvasEvents()
     Canv.removeEvents()
   }
   attachCharaEvents()

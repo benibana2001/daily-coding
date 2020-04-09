@@ -1,8 +1,16 @@
 export default class Canv {
-  static canvas
+  static canvas = null
   static ctx
+  static defaultCanvasSize = {
+    w: window.innerWidth,
+    h: 600
+  }
+
   static funcs = new Map()
   static currentFuncID
+
+  static events = []
+  static eventsCanvas = []
 
   static addFunc = (funcs, root = document.getElementById('root')) => {
     setNode(root)
@@ -20,14 +28,19 @@ export default class Canv {
     Canv.exeFunc(name)
   }
 
-  static setCanvSize = (x = window.innerWidth) => (y = 600) => setCanvSize(Canv.canvas)(x)(y)
-
   static waitResolveImgs = async () => await waitResolveImgs()
   static createImg = (path) => createImg(path)
 
   static exeFunc = (name) => {
-    // Remove old canvas, function, imgPromises
-    if (Canv.canvas) rootNode.removeChild(Canv.canvas)
+    Canv.removeOldDate()
+    Canv.setCanvas()
+    Canv.ctx = Canv.canvas.getContext('2d')
+    // Exec function
+    Canv.funcs.get(name)(Canv.ctx)
+  }
+
+  static removeOldDate = () => {
+    // Remove old function, imgPromises, Events
     if (Canv.currentFuncID) {
       cancelAnimationFrame(Canv.currentFuncID)
       Canv.currentFuncID = 0
@@ -36,40 +49,41 @@ export default class Canv {
     clearImgLoaded()
 
     if (Canv.events) Canv.removeEvents()
+    if (Canv.eventsCanvas) Canv.removeCanvasEvents()
+  }
 
-    // Create canvas Html Element
-    Canv.canvas = document.createElement('canvas')
-    rootNode.appendChild(Canv.canvas)
-    setCanvSize(Canv.canvas)()()
-
-    // Instanciate Context 
-    Canv.ctx = Canv.canvas.getContext('2d')
-
-    // Exec function
-    Canv.funcs.get(name)(Canv.ctx)
+  static setCanvas = (w = Canv.defaultCanvasSize.w, h = Canv.defaultCanvasSize.h) => {
+    if (!Canv.canvas) {
+      Canv.canvas = document.createElement('canvas')
+      rootNode.appendChild(Canv.canvas)
+    }
+    setCanvSize(Canv.canvas)(w)(h)
   }
 
   static cancelLoop = () => {
     console.log(Canv.currentFuncID)
     if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID)
   }
+
   // Wrapper func for loop animation
-  static loop = (f) => {
+  static loop = f => {
     if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID)
+
     const requestAnimFrame = (() =>
       window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
       (callback => window.setTimeout(callback, 1000 / 60))
     )()
+
     const repeat = () => {
       Canv.currentFuncID = requestAnimFrame(repeat)
       f()
     }
+
     Canv.currentFuncID = requestAnimFrame(repeat)
   }
 
   // Add event listner
-  static events = []
   static registerEvent = (type, func, options = null) => {
     Canv.events.push([type, func])
     window.addEventListener(type, func, options)
@@ -77,6 +91,17 @@ export default class Canv {
   static removeEvents = () => {
     for (let e of Canv.events) {
       window.removeEventListener(e[0], e[1])
+    }
+  }
+
+  static registerCanvasEvent = (type, func, options = null) => {
+    Canv.eventsCanvas.push([type, func])
+    Canv.canvas.addEventListener(type, func, options)
+  }
+
+  static removeCanvasEvents = () => {
+    for (let e of Canv.eventsCanvas) {
+      Canv.canvas.removeEventListener(e[0], e[1])
     }
   }
 
@@ -151,7 +176,7 @@ function createImg(path) {
   return img
 }
 
-const setCanvSize = canvas => (x = window.innerWidth) => (y = 600) => {
+const setCanvSize = canvas => x => y => {
   canvas.width = x; canvas.height = y;
 }
 
