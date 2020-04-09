@@ -1,4 +1,4 @@
-class Canv {
+export default class Canv {
   static canvas
   static ctx
   static funcs = new Map()
@@ -80,7 +80,7 @@ class Canv {
     }
   }
 
-  static drawBG = (color, clear = true) => drawBG(Canv.canvas, Canv.ctx, color, clear)
+  static drawBG = (color, clear = true) => drawBG(Canv.ctx, color, clear)
   static drawArc = (x, y, r, color) => drawArc(Canv.ctx, x, y, r, color)
 
   static particle = O => size => col => particle(O)(size)(col)
@@ -110,7 +110,7 @@ class Canv {
   // how to flip image: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale
   static flipImage = image => flipImage(image)
 
-  static fitBackgroundScale = (imgOriginalWidth, maxScale) => fitBackgroundScale(Canv.canvas, Canv.ctx, imgOriginalWidth, maxScale)
+  static fitBackgroundScale = (imgOriginalWidth, maxScale) => fitBackgroundScale(Canv.ctx, imgOriginalWidth, maxScale)
 
   static frameCalc = (framesData, frameLength, speed, head, reverse = false) => tick => frameCalc(framesData, frameLength, speed, head, reverse)(tick)
 
@@ -121,7 +121,7 @@ class Canv {
 let rootNode = null
 let btnListNode = null
 
-function setNode (root) {
+function setNode(root) {
   rootNode = root
   btnListNode = document.createElement('div')
   rootNode.appendChild(btnListNode)
@@ -152,11 +152,11 @@ function createImg(path) {
 }
 
 const setCanvSize = canvas => (x = window.innerWidth) => (y = 600) => {
-
-Canv.canvas.width = x; Canv.canvas.height = y;
+  canvas.width = x; canvas.height = y;
 }
 
-function drawBG(canvas, context, color, clear = true) {
+function drawBG(context, color, clear = true) {
+  const canvas = context.canvas
   const clearBG = () => context.clearRect(0, 0, canvas.width, canvas.height)
   if (clear) clearBG()
   context.fillStyle = color
@@ -171,7 +171,8 @@ function drawArc(context, x, y, r, color) {
   context.fill()
 }
 
-function fitBackgroundScale(canvas, context, imgOriginalWidth, maxScale) {
+function fitBackgroundScale(context, imgOriginalWidth, maxScale) {
+  const canvas = context.canvas
   const cw = canvas.width
   const x = cw / imgOriginalWidth <= maxScale
     ? cw / imgOriginalWidth
@@ -276,6 +277,3 @@ const isTouchDevice = 'ontouchend' in document
 // 
 // not using
 // const isSmartPhone = navigator.userAgent.match(/iPhone|Android.+Mobile/) ? true : false
-//
-//
-export default Canv
