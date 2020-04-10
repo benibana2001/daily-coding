@@ -32,7 +32,8 @@ const dotPattern = (c) => {
   }
 
   draw()
-  Canv.canvas.addEventListener('click', () => draw())
+  // Canv.canvas.addEventListener('click', () => draw())
+  Canv.registerCanvasEvent('click', () => draw())
 }
 
 
