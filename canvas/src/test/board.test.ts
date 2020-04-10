@@ -1,4 +1,4 @@
-import Board, { DIRECTION, Square, Token, createSquare } from '../canvases/nekonote/board'
+import Board, { DIRECTION, Square, Token, createSquare} from '../canvases/nekonote/board'
 
 const canvas: HTMLCanvasElement = document.createElement('canvas')
 const ctx: CanvasRenderingContext2D = canvas.getContext('2d')
