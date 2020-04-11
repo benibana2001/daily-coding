@@ -32,7 +32,7 @@ const nekonote = () => {
         imgsets
     );
     //
-    Canv.canvas.addEventListener('click', clickBoardHandler)
+    Canv.registerCanvasEvent('click', clickBoardHandler)
 }
 
 export default nekonote
