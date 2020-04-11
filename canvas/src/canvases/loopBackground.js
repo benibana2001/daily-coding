@@ -17,7 +17,7 @@ const loopBackground = async () => {
 
   function drawMoveImage() {
     let vx = 0
-    const speed = 0.3
+    const speed = 0.1
 
     return () => {
       vx += speed
