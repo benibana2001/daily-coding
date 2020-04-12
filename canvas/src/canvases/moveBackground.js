@@ -5,13 +5,19 @@ const moveBackground = async () => {
   const imgPerse = Canv.createImg(img_perse) // w:360, h:180
   await Canv.waitResolveImgs()
 
-  Canv.drawBG('black')
-  Canv.canvas.width = 720
+  Canv.canvas.width = (window.innerWidth > 720)
+    ? 720 :
+    window.innerWidth
+
   Canv.fitBackgroundScale(360, 2)
 
   const size = { w: 360, h: 180 }
 
-  const drawMoveBackground = drawMoveImage()
+  const drawMoveBackground = drawMoveImage(0.1)
+  const drawNotMoveBackground = drawMoveImage(0)
+
+  let startX = 0
+  drawNotMoveBackground()
 
   attachEvents()
 
@@ -27,7 +33,9 @@ const moveBackground = async () => {
 
   function keyupHandler(e) {
     Canv.arrowKeyUpHandler({
-      right: () => Canv.cancelLoop()
+      right: () => {
+        Canv.loop(drawNotMoveBackground)
+      }
     })(e)
   }
 
@@ -36,34 +44,40 @@ const moveBackground = async () => {
     Canv.registerEvent('keyup', keyupHandler)
   }
 
-  function drawMoveImage() {
-    let vx = 0
-    const speed = 0.1
-
+  function drawMoveImage(speed) {
     return () => {
-      vx += speed
-      if (vx >= 360) {
-        vx = 0
-        console.log('finish a round')
-      }
+      startX += speed
+
+      updatePosition()
 
       const position = {
-        fore: { x: -vx, y: 0 },
-        back: { x: 360 - vx, y: 0 }
+        O: { x: 0, y: 0 },
+        fore: { x: -startX, y: 0 },
+        back: { x: 360 - startX, y: 0 }
       }
+
+      const defaultSource = ({ ...position.O, ...size })
 
       Canv.drawImage(
         imgPerse,
-        { x: 0, y: 0, ...size },
+        defaultSource,
         { ...position.fore, ...size }
       )
 
       Canv.drawImage(
         imgPerse,
-        { x: 0, y: 0, ...size },
+        defaultSource,
         { ...position.back, ...size }
       )
     }
+
+    function updatePosition() {
+      if (startX >= 360) {
+        startX = 0
+        console.log('finish a round')
+      }
+    }
+
   }
 }
 
