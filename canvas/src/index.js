@@ -16,6 +16,7 @@ import cigarettes from './canvases/cigarettes.js'
 import yasumijikan from './canvases/yasumijikan.js'
 import nekonote from './canvases/nekonote/index'
 import loopBackground from './canvases/loopBackground'
+import moveBackground from './canvases/moveBackground'
 //
 const root = document.getElementById('root')
 Canv.addFunc([
@@ -35,5 +36,6 @@ Canv.addFunc([
   cigarettes,
   yasumijikan,
   nekonote,
-  loopBackground
+  loopBackground,
+  moveBackground
 ], root)
