@@ -6,19 +6,25 @@ const looftop = async () => {
   const imgBirds = Canv.createImg(birdsImage)
   await Canv.waitResolveImgs()
   //
-  const sourceLooftop = { x: 0, y: 0, w: imgLooftop.width, h: imgLooftop.height }
+  const sourceLooftop = {
+    x: 0,
+    y: 0,
+    w: imgLooftop.width,
+    h: imgLooftop.height,
+  }
   const sourceBirds = { x: 0, y: 0, w: imgBirds.width, h: imgBirds.height }
   let birdsObject = Canv.moveObj()()
   let birdsVelocity = {}
   const birdsStartPosition = () => ({
     x: -(imgBirds.width + 30),
-    y: (() => 40 * Math.random())()
+    y: (() => 40 * Math.random())(),
   })
   const endPosition = sourceLooftop.w
-  const initialBirdsObj = () => Canv.moveObj(birdsStartPosition())({ w: sourceBirds.w, h: sourceBirds.h })
+  const initialBirdsObj = () =>
+    Canv.moveObj(birdsStartPosition())({ w: sourceBirds.w, h: sourceBirds.h })
   const initialBirdsVelocity = () => ({
     x: 0.4 + 0.6 * Math.random(),
-    y: -0.06 + 0.09 * Math.random()
+    y: -0.06 + 0.09 * Math.random(),
   })
   birdsObject = initialBirdsObj()
   birdsVelocity = initialBirdsVelocity()
@@ -32,11 +38,7 @@ const looftop = async () => {
       birdsObject = initialBirdsObj()
       birdsVelocity = initialBirdsVelocity()
     }
-    Canv.drawImage(
-      imgBirds,
-      sourceBirds,
-      birdsOutput
-    )
+    Canv.drawImage(imgBirds, sourceBirds, birdsOutput)
   })
 }
 

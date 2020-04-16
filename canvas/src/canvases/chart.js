@@ -1,6 +1,6 @@
 /**
- * 
- * @param { CanvasRenderingContext2D } c 
+ *
+ * @param { CanvasRenderingContext2D } c
  */
 const chart = (c) => {
   const bgSize = { x: 400, y: 300 }

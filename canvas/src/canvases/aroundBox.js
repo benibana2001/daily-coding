@@ -1,7 +1,7 @@
 import Canv from '../CanvWriter.js'
 /**
- * 
- * @param {CanvasRenderingContext2D} c 
+ *
+ * @param {CanvasRenderingContext2D} c
  */
 const aroundBox = (c) => {
   const cw = Canv.canvas.width
@@ -18,11 +18,11 @@ const aroundBox = (c) => {
     c.fillRect(ox, oy, box.w, box.h)
     if (toggle === 1) {
       ox += box.spd
-      if (ox >= (cw - box.w)) toggle = 2
+      if (ox >= cw - box.w) toggle = 2
     }
     if (toggle === 2) {
       oy += box.spd
-      if (oy >= (ch - box.h)) toggle = 3
+      if (oy >= ch - box.h) toggle = 3
     }
     if (toggle === 3) {
       ox -= box.spd

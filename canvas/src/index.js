@@ -19,23 +19,26 @@ import loopBackground from './canvases/loopBackground'
 import moveBackground from './canvases/moveBackground'
 //
 const root = document.getElementById('root')
-Canv.addFunc([
-  chart,
-  moveBox,
-  aroundBox,
-  particle,
-  sprite,
-  sprite2,
-  dotPattern,
-  shakingBall,
-  gridParticle,
-  byebye,
-  cursor,
-  cursor2,
-  looftop,
-  cigarettes,
-  yasumijikan,
-  nekonote,
-  loopBackground,
-  moveBackground
-], root)
+Canv.addFunc(
+  [
+    chart,
+    moveBox,
+    aroundBox,
+    particle,
+    sprite,
+    sprite2,
+    dotPattern,
+    shakingBall,
+    gridParticle,
+    byebye,
+    cursor,
+    cursor2,
+    looftop,
+    cigarettes,
+    yasumijikan,
+    nekonote,
+    loopBackground,
+    moveBackground,
+  ],
+  root
+)

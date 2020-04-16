@@ -10,6 +10,7 @@
   "scripts": {
     "test": "npx jest",
     "start": "webpack-dev-server",
+    "prettier": "npx prettier --write src",
     "cp:ogp": "cp ogp_cigar.png public/",
     "build": "webpack && npm run cp:ogp",
     "deploy": "npm run build && firebase deploy"
@@ -30,6 +31,7 @@
     "html-webpack-plugin": "^4.0.3",
     "jest": "^25.1.0",
     "jest-canvas-mock": "^2.2.0",
+    "prettier": "2.0.4",
     "ts-jest": "^25.3.0",
     "ts-loader": "^6.2.2",
     "typescript": "^3.8.3",

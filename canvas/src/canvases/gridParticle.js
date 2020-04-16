@@ -8,7 +8,7 @@ const gridParticle = (c) => {
     const col = Canv.canvas.width / sz
     for (let i = 0; i < row; i++) {
       for (let j = 0; j < col; j++) {
-        const o = { x: (sz * 2 * j), y: (sz * i * 2) + (sz) }
+        const o = { x: sz * 2 * j, y: sz * i * 2 + sz }
         const color = Canv.randomRGBA(0.4)
         const p = Canv.moveParticle(o)(sz)(color)
         ps.push(p)
@@ -16,8 +16,8 @@ const gridParticle = (c) => {
     }
     return ps
   })()
-  const vx = () => Math.random() > 0.5 ? 1 : -1
-  const vy = () => Math.random() > 0.5 ? 1 : -1
+  const vx = () => (Math.random() > 0.5 ? 1 : -1)
+  const vy = () => (Math.random() > 0.5 ? 1 : -1)
   //
   const bgcolor = Canv.randomRGBA(0.3)
   Canv.loop(() => {

@@ -28,7 +28,7 @@ const loopBackground = async () => {
 
       const position = {
         fore: { x: -vx, y: 0 },
-        back: { x: 360 - vx, y: 0 }
+        back: { x: 360 - vx, y: 0 },
       }
 
       Canv.drawImage(

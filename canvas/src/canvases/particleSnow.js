@@ -4,11 +4,8 @@ const particleSnow = (c) => {
   let particles = []
   let tick = 0
   Canv.loop(() => {
-    // 最大個数とparticle作成タイミング(frame)を指定 
-    createParticles(
-      particles.length < 70 &&
-      tick % 40 === 0
-    )
+    // 最大個数とparticle作成タイミング(frame)を指定
+    createParticles(particles.length < 70 && tick % 40 === 0)
     updateParticles()
     killParticles()
     Canv.drawBG('black')
@@ -23,7 +20,7 @@ const particleSnow = (c) => {
     y: 0,
     speed: 2 + Math.random() * 3, //  2 ~ 5
     radius: 5 + Math.random() * 8,
-    color: Canv.randomRGBA(0.3 + Math.random() * 0.5)
+    color: Canv.randomRGBA(0.3 + Math.random() * 0.5),
   })
   const updateParticles = () => {
     for (let part of particles) {

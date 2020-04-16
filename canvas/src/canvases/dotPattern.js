@@ -7,8 +7,8 @@ const dotPattern = (c) => {
     return [
       Math.random() * cw,
       Math.random() * ch,
-      ch > cw ? Math.random() * cw / 5 : Math.random() * ch / 5,
-      Canv.randomRGBA(Math.random() * 1.0)
+      ch > cw ? (Math.random() * cw) / 5 : (Math.random() * ch) / 5,
+      Canv.randomRGBA(Math.random() * 1.0),
     ]
   }
 
@@ -35,6 +35,5 @@ const dotPattern = (c) => {
   // Canv.canvas.addEventListener('click', () => draw())
   Canv.registerCanvasEvent('click', () => draw())
 }
-
 
 export default dotPattern

@@ -5,9 +5,7 @@ const moveBackground = async () => {
   const imgPerse = Canv.createImg(img_perse) // w:360, h:180
   await Canv.waitResolveImgs()
 
-  Canv.canvas.width = (window.innerWidth > 720)
-    ? 720 :
-    window.innerWidth
+  Canv.canvas.width = window.innerWidth > 720 ? 720 : window.innerWidth
 
   Canv.fitBackgroundScale(360, 2)
 
@@ -57,7 +55,7 @@ const moveBackground = async () => {
 
           speed: 2 + Math.random() * 3,
           radius: 5 + Math.random() * 8,
-          color: 'white'
+          color: 'white',
         }
       }
     }
@@ -72,7 +70,7 @@ const moveBackground = async () => {
       for (let particle of particles) {
         particle.y += particle.speed
 
-        if(particle.y > size.h) particle.y = 0
+        if (particle.y > size.h) particle.y = 0
       }
 
       tick++
@@ -83,8 +81,7 @@ const moveBackground = async () => {
     Canv.arrowKeydownHandler({
       right: () => {
         Canv.loop(drawMoveBackground)
-      }
-
+      },
     })(e)
   }
 
@@ -92,7 +89,7 @@ const moveBackground = async () => {
     Canv.arrowKeyUpHandler({
       right: () => {
         Canv.loop(drawNotMoveBackground)
-      }
+      },
     })(e)
   }
 
@@ -110,22 +107,14 @@ const moveBackground = async () => {
       const position = {
         O: { x: 0, y: 0 },
         fore: { x: -startX, y: 0 },
-        back: { x: 360 - startX, y: 0 }
+        back: { x: 360 - startX, y: 0 },
       }
 
-      const defaultSource = ({ ...position.O, ...size })
+      const defaultSource = { ...position.O, ...size }
 
-      Canv.drawImage(
-        imgPerse,
-        defaultSource,
-        { ...position.fore, ...size }
-      )
+      Canv.drawImage(imgPerse, defaultSource, { ...position.fore, ...size })
 
-      Canv.drawImage(
-        imgPerse,
-        defaultSource,
-        { ...position.back, ...size }
-      )
+      Canv.drawImage(imgPerse, defaultSource, { ...position.back, ...size })
     }
 
     function updatePosition() {
@@ -134,7 +123,6 @@ const moveBackground = async () => {
         console.log('finish a round')
       }
     }
-
   }
 }
 
