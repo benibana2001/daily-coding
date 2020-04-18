@@ -30,8 +30,8 @@ class Queue {
 
 describe("Queue", () => {
   let queue1 = new Queue();
-  const initializeQueue = array => () => (queue1 = new Queue(array));
-  const resetQueue = initializeQueue()
+  const initializeQueue = (array) => () => (queue1 = new Queue(array));
+  const resetQueue = initializeQueue();
 
   afterEach(resetQueue);
 
@@ -44,13 +44,54 @@ describe("Queue", () => {
   });
 
   test("dequeue", () => {
-    initializeQueue([1, 2, 3])()
+    initializeQueue([1, 2, 3])();
     queue1.dequeue();
 
     expect(queue1).toEqual({ array: [2, 3] });
 
-    console.log(queue1.getBuffer()[0])
-    console.log(queue1.getBuffer()[1])
-    console.log(queue1.getBuffer().length)
+    console.log(queue1.getBuffer()[0]);
+    console.log(queue1.getBuffer()[1]);
+    console.log(queue1.getBuffer().length);
   });
 });
+
+class Customer {
+  constructor(name, order) {
+    this.name = name;
+    this.order = order;
+  }
+}
+
+class Cashier {
+  constructor() {
+    this.customers = new Queue();
+  }
+
+  addOrder(customer) {
+    this.customers.enqueue(customer);
+  }
+
+  deliverOrder() {
+    const finishedCustomer = this.customers.dequeue();
+    return [finishedCustomer.name, finishedCustomer.order];
+  }
+}
+
+describe('Cashier and Order', () => {
+  test('', () => {
+    const casher = new Cashier()
+    const customers = [
+      new Customer('Takeshi', 'Potato fries'),
+      new Customer('Satoshi', 'Burger'),
+      new Customer('Kasumi', 'Drink')
+    ]
+
+    for (let customer of customers){
+      casher.addOrder(customer)
+    }
+
+    expect(casher.deliverOrder()).toEqual(['Takeshi', 'Potato fries'])
+    expect(casher.deliverOrder()).toEqual(['Satoshi', 'Burger'])
+    expect(casher.deliverOrder()).toEqual(['Kasumi', 'Drink'])
+  })
+})
