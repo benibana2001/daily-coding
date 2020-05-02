@@ -14,30 +14,64 @@ const cameraOptions = {
 };
 
 const camera = new THREE.PerspectiveCamera(
-    cameraOptions.fieldOfView,
-    cameraOptions.aspectRatio,
-    ...cameraOptions.clippingPlane
+  cameraOptions.fieldOfView,
+  cameraOptions.aspectRatio,
+  ...cameraOptions.clippingPlane
 );
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(windowSize.w, windowSize.h);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({
-  color: 0x00ff00,
-});
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const box = {
+  w: 1,
+  h: 1,
+  depth: 1,
+};
 
-camera.position.z = 5;
+const geometry = new THREE.BoxGeometry(box.w, box.h, box.depth);
+const simpleCube = makeCube(scene);
+const cubes = [
+  simpleCube(geometry, 0x44aa88, -1),
+  simpleCube(geometry, 0x8844aa, 1),
+];
 
+const lightOptions = {
+  color: 0xffffff,
+  intensity: 1,
+};
+
+const light = new THREE.DirectionalLight(
+  lightOptions.color,
+  lightOptions.intensity
+);
+light.position.set(-1, 2, 4);
+
+scene.add(light);
+camera.position.z = 8;
+
+let rot = 0;
 const animate = function () {
-  requestAnimationFrame(animate);
+  rot += 0.01;
 
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
+  cubes.forEach((cube) => {
+    cube.rotation.x = rot;
+    cube.rotation.y = rot;
+  });
 
   renderer.render(scene, camera);
+  requestAnimationFrame(animate);
 };
+
 animate();
+
+//
+function makeCube(scene) {
+  return (geometry, color, x) => {
+    const material = new THREE.MeshPhongMaterial({ color });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    cube.position.x = x;
+    return cube;
+  };
+}
