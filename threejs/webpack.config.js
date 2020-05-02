@@ -11,6 +11,7 @@ module.exports = {
       template: path.resolve(__dirname, "template", "./index.html"),
     }),
   ],
+  devtool: "inline-source-map",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "main.js",
