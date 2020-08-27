@@ -6,8 +6,8 @@
   "scripts": {
     "prettier": "npx prettier --write src",
     "test": "mocha --reporter list",
-    "start": "npx webpack-dev-server",
-    "build": "npm run prettier && npx webpack"
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "npm run prettier && webpack --config webpack.prod.js"
   },
   "keywords": [],
   "author": "",
@@ -15,17 +15,23 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/preset-env": "^7.9.6",
+    "@types/three": "^0.103.2",
+    "@typescript-eslint/parser": "^3.0.2",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
-    "html-webpack-plugin": "^4.0.3",
-    "mocha": "^7.1.2",
-    "three": "^0.116.1",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.9.0",
-    "prettier": "2.0.4",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
-    "eslint-plugin-prettier": "^3.1.3"
-  }
+    "eslint-plugin-prettier": "^3.1.3",
+    "html-webpack-plugin": "^4.0.3",
+    "mocha": "^7.1.2",
+    "prettier": "2.0.4",
+    "three": "^0.117.0",
+    "ts-loader": "^7.0.5",
+    "typescript": "^3.9.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^4.2.2"
+  },
+  "dependencies": {}
 }
