@@ -252,13 +252,122 @@ function main() {
     const radius = 7;
     addSolidGeometry(-2, -1, new THREE.TetrahedronBufferGeometry(radius));
   }
-
+  {
+    const radius = 5;
+    const tubeRadius = 2;
+    const radialSegments = 8;
+    const tubularSegments = 24;
+    addSolidGeometry(
+      0,
+      -1,
+      new THREE.TorusBufferGeometry(
+        radius,
+        tubeRadius,
+        radialSegments,
+        tubularSegments
+      )
+    );
+  }
+  {
+    const radius = 3.5;
+    const tube = 0.5;
+    const radialSegments = 8;
+    const tubularSegments = 64;
+    const p = 5;
+    const q = 3;
+    addSolidGeometry(
+      1,
+      -1,
+      new THREE.TorusKnotBufferGeometry(
+        radius,
+        tube,
+        tubularSegments,
+        radialSegments,
+        p,
+        q
+      )
+    );
+  }
   function addObject(x, y, obj) {
     obj.position.x = x * spread;
     obj.position.y = y * spread;
 
     scene.add(obj);
     objects.push(obj);
+  }
+  {
+    class CustomSinCurve extends THREE.Curve {
+      constructor(scale) {
+        super();
+        this.scale = scale;
+      }
+      getPoint(t) {
+        const tx = t * 3 - 1.5;
+        const ty = Math.sin(2 * Math.PI * t);
+        const tz = 0;
+        return new THREE.Vector3(tx, ty, tz).multiplyScalar(this.scale);
+      }
+    }
+
+    const path = new CustomSinCurve(4);
+    const tubularSegments = 20;
+    const radius = 1;
+    const radialSegments = 8;
+    const closed = false;
+    addSolidGeometry(
+      2,
+      -1,
+      new THREE.TubeBufferGeometry(
+        path,
+        tubularSegments,
+        radius,
+        radialSegments,
+        closed
+      )
+    );
+  }
+  {
+    const width = 8;
+    const height = 8;
+    const depth = 8;
+    const thresholdAngle = 15;
+    addLineGeometry(
+      -1,
+      -2,
+      new THREE.EdgesGeometry(
+        new THREE.BoxBufferGeometry(width, height, depth),
+        thresholdAngle
+      )
+    );
+  }
+  {
+    const width = 8;
+    const height = 8;
+    const depth = 8;
+    addLineGeometry(
+      1,
+      -2,
+      new THREE.WireframeGeometry(
+        new THREE.BoxBufferGeometry(width, height, depth)
+      )
+    );
+  }
+  {
+    const radius = 7;
+    const widthSegments = 12;
+    const heightSegments = 8;
+    const geometry = new THREE.SphereBufferGeometry(
+      radius,
+      widthSegments,
+      heightSegments
+    );
+    const material = new THREE.PointsMaterial({
+      color: "red",
+      sizeAttenuation: false,
+      size: 10, 
+    });
+    const points = new THREE.Points(geometry, material);
+    addObject(0, -2, points);
   }
 
   function createMaterial() {
@@ -277,6 +386,12 @@ function main() {
 
   function addSolidGeometry(x, y, geometry) {
     const mesh = new THREE.Mesh(geometry, createMaterial());
+    addObject(x, y, mesh);
+  }
+
+  function addLineGeometry(x, y, geometry) {
+    const material = new THREE.LineBasicMaterial({ color: 0x000000 });
+    const mesh = new THREE.LineSegments(geometry, material);
     addObject(x, y, mesh);
   }
 
