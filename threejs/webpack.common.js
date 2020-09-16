@@ -4,7 +4,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "development",
-  entry: "./src/orbit.js",
+  entry: "./src/save.js",
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -32,6 +32,18 @@ module.exports = {
       {
         test: /\.ts$/,
         use: "ts-loader",
+      },
+      {
+        test: /\.(png|jpg)$/,
+        include: [path.resolve(__dirname, 'src')],
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+            },
+          },
+        ],
       },
     ],
   },

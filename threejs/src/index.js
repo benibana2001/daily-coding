@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import imgSample01 from "./assets/texture_cylinder.png";
 
 function main() {
   // set renderer
@@ -327,6 +328,26 @@ function main() {
     );
   }
   {
+    const boxWidth = 8;
+    const boxHeight = 8;
+    const boxDepth = 8;
+    const loader = new THREE.TextureLoader();
+    const material = new THREE.MeshBasicMaterial({
+      map: loader.load(imgSample01),
+      color: 0x007eff,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    addGeometly(
+      -2,
+      -2,
+      new THREE.BoxBufferGeometry(boxWidth, boxHeight, boxDepth),
+      material
+    );
+  }
+  {
     const width = 8;
     const height = 8;
     const depth = 8;
@@ -364,7 +385,7 @@ function main() {
     const material = new THREE.PointsMaterial({
       color: "red",
       sizeAttenuation: false,
-      size: 10, 
+      size: 10,
     });
     const points = new THREE.Points(geometry, material);
     addObject(0, -2, points);
@@ -382,6 +403,11 @@ function main() {
     material.color.setHSL(hue, saturation, luminance);
 
     return material;
+  }
+
+  function addGeometly(x, y, geometry, material) {
+    const mesh = new THREE.Mesh(geometry, material);
+    addObject(x, y, mesh);
   }
 
   function addSolidGeometry(x, y, geometry) {
