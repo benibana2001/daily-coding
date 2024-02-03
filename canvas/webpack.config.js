@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -26,26 +28,17 @@ module.exports = {
           path.resolve(__dirname, 'src/test/'),
         ],
         use: {
-          loader: "babel-loader"
+          loader: 'babel-loader'
         }
       },
       {
-        test: /\.ts$/,
-        loader: 'ts-loader',
-        include: [path.resolve(__dirname, 'src')],
-        exclude: [
-          /node_modules/,
-          path.resolve(__dirname, 'src/test/'),
-        ]
-      },
-      {
         test: /\.(gif|png|jpg|eot|wof|woff|woff2|ttf|svg)$/,
-        loader: "url-loader",
+        loader: 'url-loader',
         include: [path.resolve(__dirname, 'src/assets')],
       }
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: ['.js']
   }
 };

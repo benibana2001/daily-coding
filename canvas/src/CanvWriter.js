@@ -1,146 +1,154 @@
 export default class Canv {
-  static canvas = null
-  static ctx
+  static canvas = null;
+  static ctx;
   static defaultCanvasSize = {
     w: window.innerWidth,
     h: 600
-  }
+  };
 
-  static funcs = new Map()
-  static currentFuncID
+  static funcs = new Map();
+  static currentFuncID;
 
-  static events = []
-  static eventsCanvas = []
+  static events = [];
+  static eventsCanvas = [];
 
   static addFunc = (funcs, root = document.getElementById('root')) => {
-    setNode(root)
+    setNode(root);
 
     for (const func of funcs) {
-      const name = func.name
-      Canv.funcs.set(name, func)
-      createButton(btnListNode, name, () => Canv.exeFunc(name))
+      const name = func.name;
+      Canv.funcs.set(name, func);
+      createButton(btnListNode, name, () => Canv.exeFunc(name));
     }
-    Canv.defaultFunc(funcs[funcs.length - 1].name)
-  }
+    Canv.defaultFunc(funcs[funcs.length - 1].name);
+  };
 
-  static defaultFunc = name => {
-    name = location.search ? location.search.slice(1) : name
-    Canv.exeFunc(name)
-  }
+  static defaultFunc = (name) => {
+    name = location.search ? location.search.slice(1) : name;
+    Canv.exeFunc(name);
+  };
 
-  static waitResolveImgs = async () => await waitResolveImgs()
-  static createImg = (path) => createImg(path)
+  static waitResolveImgs = async () => await waitResolveImgs();
+  static createImg = (path) => createImg(path);
 
   static exeFunc = (name) => {
-    Canv.removeOldDate()
-    Canv.setCanvas()
-    Canv.ctx = Canv.canvas.getContext('2d')
+    Canv.removeOldDate();
+    Canv.setCanvas();
+    Canv.ctx = Canv.canvas.getContext('2d');
     // Exec function
-    Canv.funcs.get(name)(Canv.ctx)
-  }
+    Canv.funcs.get(name)(Canv.ctx);
+  };
 
   static removeOldDate = () => {
     // Remove old function, imgPromises, Events
     if (Canv.currentFuncID) {
-      cancelAnimationFrame(Canv.currentFuncID)
-      Canv.currentFuncID = 0
+      cancelAnimationFrame(Canv.currentFuncID);
+      Canv.currentFuncID = 0;
     }
 
-    clearImgLoaded()
+    clearImgLoaded();
 
-    if (Canv.events) Canv.removeEvents()
-    if (Canv.eventsCanvas) Canv.removeCanvasEvents()
-  }
+    if (Canv.events) Canv.removeEvents();
+    if (Canv.eventsCanvas) Canv.removeCanvasEvents();
+  };
 
-  static setCanvas = (w = Canv.defaultCanvasSize.w, h = Canv.defaultCanvasSize.h) => {
+  static setCanvas = (
+    w = Canv.defaultCanvasSize.w,
+    h = Canv.defaultCanvasSize.h
+  ) => {
     if (!Canv.canvas) {
-      Canv.canvas = document.createElement('canvas')
-      rootNode.appendChild(Canv.canvas)
+      Canv.canvas = document.createElement('canvas');
+      rootNode.appendChild(Canv.canvas);
     }
-    setCanvSize(Canv.canvas)(w)(h)
-  }
+    setCanvSize(Canv.canvas)(w)(h);
+  };
 
   static cancelLoop = () => {
-    console.log(Canv.currentFuncID)
-    if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID)
-  }
+    console.log(Canv.currentFuncID);
+    if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID);
+  };
 
   // Wrapper func for loop animation
-  static loop = f => {
-    if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID)
+  static loop = (f) => {
+    if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID);
 
     const requestAnimFrame = (() =>
       window.requestAnimationFrame ||
       window.webkitRequestAnimationFrame ||
-      (callback => window.setTimeout(callback, 1000 / 60))
-    )()
+      ((callback) => window.setTimeout(callback, 1000 / 60)))();
 
     const repeat = () => {
-      Canv.currentFuncID = requestAnimFrame(repeat)
-      f()
-    }
+      Canv.currentFuncID = requestAnimFrame(repeat);
+      f();
+    };
 
-    Canv.currentFuncID = requestAnimFrame(repeat)
-  }
+    Canv.currentFuncID = requestAnimFrame(repeat);
+  };
 
   // Add event listner
   static registerEvent = (type, func, options = null) => {
-    Canv.events.push([type, func])
-    window.addEventListener(type, func, options)
-  }
+    Canv.events.push([type, func]);
+    window.addEventListener(type, func, options);
+  };
   static removeEvents = () => {
     for (let e of Canv.events) {
-      window.removeEventListener(e[0], e[1])
+      window.removeEventListener(e[0], e[1]);
     }
-  }
+  };
 
   static registerCanvasEvent = (type, func, options = null) => {
-    Canv.eventsCanvas.push([type, func])
-    Canv.canvas.addEventListener(type, func, options)
-  }
+    Canv.eventsCanvas.push([type, func]);
+    Canv.canvas.addEventListener(type, func, options);
+  };
 
   static removeCanvasEvents = () => {
     for (let e of Canv.eventsCanvas) {
-      Canv.canvas.removeEventListener(e[0], e[1])
+      Canv.canvas.removeEventListener(e[0], e[1]);
     }
-  }
+  };
 
-  static drawBG = (color, clear = true) => drawBG(Canv.ctx, color, clear)
-  static drawArc = (x, y, r, color) => drawArc(Canv.ctx, x, y, r, color)
+  static drawBG = (color, clear = true) => drawBG(Canv.ctx, color, clear);
+  static drawArc = (x, y, r, color) => drawArc(Canv.ctx, x, y, r, color);
 
-  static particle = O => size => col => particle(O)(size)(col)
-  static moveParticle = O => size => col => V => moveParticle(O)(size)(col)(V)
-  static moveObj = O => Size => V => moveObj(O)(Size)(V)
+  static particle = (O) => (size) => (col) => particle(O)(size)(col);
+  static moveParticle = (O) => (size) => (col) => (V) =>
+    moveParticle(O)(size)(col)(V);
+  static moveObj = (O) => (Size) => (V) => moveObj(O)(Size)(V);
 
-  static randomRGBA = opacity => randomRGBA(opacity)
+  static randomRGBA = (opacity) => randomRGBA(opacity);
 
   // Parse a json file generated by Aseprite
   //   Default: create each frame as a object, and generate a array with all frames.
-  static parseAsperiteJSON = (data, toArray = false) => parseAsperiteJSON(data, toArray)
+  static parseAsperiteJSON = (data, toArray = false) =>
+    parseAsperiteJSON(data, toArray);
 
-  static arrowKeydownHandler = funcs => e => arrowKeydownHandler(funcs)(e)
+  static arrowKeydownHandler = (funcs) => (e) => arrowKeydownHandler(funcs)(e);
 
-  static keyupHandler = func => e => func(e)
+  static keyupHandler = (func) => (e) => func(e);
 
-  static arrowKeyUpHandler = funcs => e => arrowKeyUpHandler(funcs)(e)
+  static arrowKeyUpHandler = (funcs) => (e) => arrowKeyUpHandler(funcs)(e);
   //
   static drawImage = (source, inputFrame, outputImage = inputFrame) => {
     Canv.ctx.drawImage(
       source,
       ...[inputFrame.x, inputFrame.y, inputFrame.w, inputFrame.h],
       ...[outputImage.x, outputImage.y, outputImage.w, outputImage.h]
-    )
-  }
+    );
+  };
 
   // how to flip image: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/scale
-  static flipImage = image => flipImage(image)
+  static flipImage = (image) => flipImage(image);
 
-  static fitBackgroundScale = (imgOriginalWidth, maxScale) => fitBackgroundScale(Canv.ctx, imgOriginalWidth, maxScale)
+  static fitBackgroundScale = (imgOriginalWidth, maxScale) =>
+    fitBackgroundScale(Canv.ctx, imgOriginalWidth, maxScale);
 
-  static frameCalc = (framesData, frameLength, speed, head, reverse = false) => tick => frameCalc(framesData, frameLength, speed, head, reverse)(tick)
+  static frameCalc =
+    (framesData, frameLength, speed, head, reverse = false) =>
+    (tick) =>
+      frameCalc(framesData, frameLength, speed, head, reverse)(tick);
 
-  static deviceTrigger = () => deviceTrigger()
-  static getTouchPosition = e => getTouchPosition(e)
+  static deviceTrigger = () => deviceTrigger();
+  static getTouchPosition = (e) => getTouchPosition(e);
 }
 
 let rootNode = null
@@ -159,146 +167,162 @@ function createButton(node, name, func) {
   node.appendChild(btn)
 }
 
-let imgLoaded = []
+let imgLoaded = [];
 const clearImgLoaded = () => {
-  if (imgLoaded) imgLoaded = []
-}
+  if (imgLoaded) imgLoaded = [];
+};
 async function waitResolveImgs() {
-  await Promise.all(imgLoaded)
+  await Promise.all(imgLoaded);
 }
 function createImg(path) {
-  const img = new Image()
+  const img = new Image();
   const promise = new Promise((resolve) => {
-    img.src = path
-    img.onload = () => resolve(true); console.log(`resolved: ${path}`);
-  })
-  imgLoaded.push(promise)
-  return img
+    img.src = path;
+    img.onload = () => resolve(true);
+    console.log(`resolved: ${path}`);
+  });
+  imgLoaded.push(promise);
+  return img;
 }
 
-const setCanvSize = canvas => x => y => {
-  canvas.width = x; canvas.height = y;
-}
+const setCanvSize = (canvas) => (x) => (y) => {
+  canvas.width = x;
+  canvas.height = y;
+};
 
 function drawBG(context, color, clear = true) {
-  const canvas = context.canvas
-  const clearBG = () => context.clearRect(0, 0, canvas.width, canvas.height)
-  if (clear) clearBG()
-  context.fillStyle = color
-  context.fillRect(0, 0, canvas.width, canvas.height)
+  const canvas = context.canvas;
+  const clearBG = () => context.clearRect(0, 0, canvas.width, canvas.height);
+  if (clear) clearBG();
+  context.fillStyle = color;
+  context.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawArc(context, x, y, r, color) {
-  context.beginPath()
-  context.arc(x, y, r, 0, Math.PI * 2)
-  context.closePath()
-  context.fillStyle = color
-  context.fill()
+  context.beginPath();
+  context.arc(x, y, r, 0, Math.PI * 2);
+  context.closePath();
+  context.fillStyle = color;
+  context.fill();
 }
 
 function fitBackgroundScale(context, imgOriginalWidth, maxScale) {
-  const canvas = context.canvas
-  const cw = canvas.width
-  const x = cw / imgOriginalWidth <= maxScale
-    ? cw / imgOriginalWidth
-    : maxScale
-  const y = x
-  context.scale(x, y)
-  return [x, y]
+  const canvas = context.canvas;
+  const cw = canvas.width;
+  const x =
+    cw / imgOriginalWidth <= maxScale ? cw / imgOriginalWidth : maxScale;
+  const y = x;
+  context.scale(x, y);
+  return [x, y];
 }
 
-const randomColor = () => Math.random() * 255
-const randomRGBA = opacity => `rgba(${randomColor()},${randomColor()},${randomColor()}, ${opacity})`
+const randomColor = () => Math.random() * 255;
+const randomRGBA = (opacity) =>
+  `rgba(${randomColor()},${randomColor()},${randomColor()}, ${opacity})`;
 
-const particle = O => size => col => [O.x, O.y, size, col]
-const moveParticle = O => size => col => V => {
-  O.x += V.x
-  O.y += V.y
-  return [O.x, O.y, size, col]
-}
-const moveObj = O => Size => V => {
-  O.x += V.x
-  O.y += V.y
-  return { x: O.x, y: O.y, w: Size.w, h: Size.h }
-}
+const particle = (O) => (size) => (col) => [O.x, O.y, size, col];
+const moveParticle = (O) => (size) => (col) => (V) => {
+  O.x += V.x;
+  O.y += V.y;
+  return [O.x, O.y, size, col];
+};
+const moveObj = (O) => (Size) => (V) => {
+  O.x += V.x;
+  O.y += V.y;
+  return { x: O.x, y: O.y, w: Size.w, h: Size.h };
+};
 
 function parseAsperiteJSON(data, toArray = false) {
-  const frames = data.frames
-  let ary = []
-  const frametoary = (frameObj) => [frameObj.x, frameObj.y, frameObj.w, frameObj.h]
+  const frames = data.frames;
+  let ary = [];
+  const frametoary = (frameObj) => [
+    frameObj.x,
+    frameObj.y,
+    frameObj.w,
+    frameObj.h
+  ];
   for (let key of Object.keys(frames)) {
-    let eachFrame = frames[key].frame
-    if (toArray) eachFrame = frametoary(eachFrame)
-    ary.push(eachFrame)
+    let eachFrame = frames[key].frame;
+    if (toArray) eachFrame = frametoary(eachFrame);
+    ary.push(eachFrame);
   }
-  return ary
+  return ary;
 }
 
 // TODO: Aseprite の関数群として一つにまとめるか
-const frameCalc = (framesData, frameLength, speed, head, reverse = false) => tick => {
-  const current = tick % (frameLength * speed)
-  for (let i = 0; i < frameLength; i++) {
-    const currentFrame = reverse ? head - i : head + i
-    if (current < (i + 1) * speed) return framesData[currentFrame]
-  }
-}
+const frameCalc =
+  (framesData, frameLength, speed, head, reverse = false) =>
+  (tick) => {
+    const current = tick % (frameLength * speed);
+    for (let i = 0; i < frameLength; i++) {
+      const currentFrame = reverse ? head - i : head + i;
+      if (current < (i + 1) * speed) return framesData[currentFrame];
+    }
+  };
 
-const arrowKeydownHandler = funcs => e => {
-  const isArrowKey = e => e.key.slice(0, 5) === 'Arrow'
-  if (isArrowKey(e)) e.preventDefault()
+const arrowKeydownHandler = (funcs) => (e) => {
+  const isArrowKey = (e) => e.key.slice(0, 5) === 'Arrow';
+  if (isArrowKey(e)) e.preventDefault();
   switch (e.key) {
     case 'ArrowRight':
-      if (funcs.right) funcs.right(); break
+      if (funcs.right) funcs.right();
+      break;
     case 'ArrowLeft':
-      if (funcs.left) funcs.left(); break
+      if (funcs.left) funcs.left();
+      break;
     case 'ArrowUp':
-      if (funcs.up) funcs.up(); break
+      if (funcs.up) funcs.up();
+      break;
     case 'ArrowDown':
-      if (funcs.down) funcs.down(); break
+      if (funcs.down) funcs.down();
+      break;
   }
-}
+};
 
-const arrowKeyUpHandler = funcs => e => {
-  const isArrowKey = e => e.key.slice(0, 5) === 'Arrow'
-  if (isArrowKey(e)) e.preventDefault()
+const arrowKeyUpHandler = (funcs) => (e) => {
+  const isArrowKey = (e) => e.key.slice(0, 5) === 'Arrow';
+  if (isArrowKey(e)) e.preventDefault();
   switch (e.key) {
     case 'ArrowRight':
-      if (funcs.right) funcs.right(); break
+      if (funcs.right) funcs.right();
+      break;
     case 'ArrowLeft':
-      if (funcs.left) funcs.left(); break
+      if (funcs.left) funcs.left();
+      break;
     case 'ArrowUp':
-      if (funcs.up) funcs.up(); break
+      if (funcs.up) funcs.up();
+      break;
     case 'ArrowDown':
-      if (funcs.down) funcs.down(); break
+      if (funcs.down) funcs.down();
+      break;
   }
-}
+};
 
 function flipImage(image) {
-  const canv = document.createElement('canvas')
-  const ctx = canv.getContext('2d')
-  const newImage = new Image()
-  canv.width = image.width
-  canv.height = image.height
-  ctx.scale(-1, 1)
-  ctx.drawImage(image, -image.width, 0)
-  newImage.src = canv.toDataURL()
-  return newImage
+  const canv = document.createElement('canvas');
+  const ctx = canv.getContext('2d');
+  const newImage = new Image();
+  canv.width = image.width;
+  canv.height = image.height;
+  ctx.scale(-1, 1);
+  ctx.drawImage(image, -image.width, 0);
+  newImage.src = canv.toDataURL();
+  return newImage;
 }
 
 const deviceTrigger = () => ({
   start: isTouchDevice ? 'touchstart' : 'mousedown',
   end: isTouchDevice ? 'touchend' : 'mouseup'
-})
+});
 
-const getTouchPosition = e => ({
+const getTouchPosition = (e) => ({
   x: isTouchDevice ? e.changedTouches[0].pageX : e.pageX,
   y: isTouchDevice ? e.changedTouches[0].pageY : e.pageY
-})
+});
 
-const isTouchDevice = 'ontouchend' in document
-
+const isTouchDevice = 'ontouchend' in document;
 
 // Device check
-// 
+//
 // not using
 // const isSmartPhone = navigator.userAgent.match(/iPhone|Android.+Mobile/) ? true : false

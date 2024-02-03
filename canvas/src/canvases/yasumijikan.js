@@ -162,17 +162,14 @@ const yasumijikan = async () => {
   // Person state
   let tickPerson = 0
   const resetTick = () => tickPerson = 0
-  let cigaring = false
 
   let cigarActions = {
     doCigar: () => {
       resetTick()
-      cigaring = true
       detachCharaEvents()
     },
 
     afterCigar: () => {
-      cigaring = true
       attachCharaEvents()
     },
 

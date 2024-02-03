@@ -14,7 +14,6 @@ import cursor2 from './canvases/cursor_02/index.js'
 import looftop from './canvases/looftop.js'
 import cigarettes from './canvases/cigarettes.js'
 import yasumijikan from './canvases/yasumijikan.js'
-import nekonote from './canvases/nekonote/index'
 import loopBackground from './canvases/loopBackground'
 import moveBackground from './canvases/moveBackground'
 //
@@ -35,7 +34,6 @@ Canv.addFunc([
   looftop,
   cigarettes,
   yasumijikan,
-  nekonote,
   loopBackground,
   moveBackground
 ], root)
