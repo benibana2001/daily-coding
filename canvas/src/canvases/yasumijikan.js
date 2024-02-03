@@ -28,6 +28,8 @@ const yasumijikan = async () => {
     h: imgLooftop.height
   }
 
+  Canv.setCanvas(sourceLooftop.w * 2, sourceLooftop.h * 2)
+
   const sourceBirds = {
     x: 0,
     y: 0,
@@ -45,7 +47,6 @@ const yasumijikan = async () => {
     w: personSpritesFrames[0].w,
     h: personSpritesFrames[0].h
   }
-
   //
   // birds object
   let birdsObject = Canv.moveObj()()
@@ -213,11 +214,12 @@ const yasumijikan = async () => {
   // Event handler
   const charaWidth = personFrameSize.w * scale[0]
   const currentCharaX = () => currentOutput.x * scale[0]
+  const canvasPosition = document.querySelector('canvas')?.getBoundingClientRect();
 
   const deviceStartHandler = e => {
     e.preventDefault()
 
-    const touchedX = Canv.getTouchPosition(e).x
+    const touchedX = canvasPosition ? Canv.getTouchPosition(e).x - canvasPosition?.x  : Canv.getTouchPosition(e).x;
 
     if (touchedX < currentCharaX()) loopAnimation(status.runLeft)
     if (currentCharaX() < touchedX && touchedX < currentCharaX() + charaWidth) cigarLoop()
@@ -225,7 +227,7 @@ const yasumijikan = async () => {
   }
 
   const deviceEndHandler = e => {
-    const removedX = Canv.getTouchPosition(e).x
+    const removedX = canvasPosition ? Canv.getTouchPosition(e).x - canvasPosition?.x  : Canv.getTouchPosition(e).x;
 
     if (removedX < currentCharaX()) loopAnimation(status.constantLeft)
     if (removedX > currentCharaX()) loopAnimation(status.constantRight)

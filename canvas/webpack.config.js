@@ -10,6 +10,9 @@ module.exports = {
     filename: 'main.js',
     path: path.resolve(__dirname, 'public'),
   },
+  devServer: {
+    static: './'
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin(
@@ -30,6 +33,10 @@ module.exports = {
         use: {
           loader: 'babel-loader'
         }
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.(gif|png|jpg|eot|wof|woff|woff2|ttf|svg)$/,

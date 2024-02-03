@@ -8,10 +8,10 @@
   "description": "",
   "private": true,
   "scripts": {
-    "test": "npx jest",
     "start": "npx webpack serve",
     "cp:ogp": "cp ogp_cigar.png public/",
-    "build": "npx webpack && npm run cp:ogp",
+    "cp:css": "cp style.css public/",
+    "build": "npx webpack && npm run cp:css && npm run cp:ogp",
     "deploy": "npm run build && firebase deploy"
   },
   "keywords": [],
@@ -25,8 +25,10 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^6.10.0",
     "eslint": "^8.56.0",
     "html-webpack-plugin": "^5.6.0",
+    "style-loader": "^3.3.4",
     "url-loader": "^4.0.0",
     "webpack": "^5.90.1",
     "webpack-cli": "^4.10.0",
