@@ -1,8 +1,17 @@
 :root {
   --measure: 100%;
+  --gutter: 0.2rem;
+
+  @media (min-width: 300px) {
+    font-size: 80%;
+  }
+
+  @media (min-width: 450px) {
+    font-size: 100%;
+  }
 
   @media (min-width: 960px) {
-    font-size: 165%;
+    font-size: 125%;
   }
 }
 
@@ -33,9 +42,9 @@ h1 {
 }
 
 canvas {
-  aspect-ratio: auto;
   display: block;
   max-width: 100%;
+  padding: 1rem;
 }
 
 button {
@@ -47,7 +56,6 @@ button {
   font-size: 1rem;
   font-weight: thin;
   padding: 0.4rem;
-  /* max-width: 10rem; */
 }
 
 button > div {
@@ -72,14 +80,14 @@ button:hover {
 }
 
 .sidebar {
-  flex-basis: 10rem;
+  flex-basis: 14rem;
   flex-grow: 1;
   background-color: #eeeeee;
 }
 .not-sidebar {
   flex-basis: 0;
   flex-grow: 999;
-  min-width: 70%;
+  min-width: 60%;
   background-color: #dddddd;
   min-height: 100vh;
 }
@@ -90,7 +98,6 @@ button:hover {
 }
 
 [class*='box'] {
-  display: block;
   padding: 1rem;
 }
 
@@ -100,11 +107,42 @@ button:hover {
   justify-content: flex-start;
 }
 
-[class*='stack'] > * {
-  margin-top: 0.4rem;
-  margin-bottom: 0;
+
+[class*='stack'] > * + * {
+  margin-top: var(--gutter);
 }
 
-[class*='stack'] > :nth-child(1) {
+.stack-sidebar > :nth-child(1) {
   margin-bottom: auto;
+}
+
+.stack-button-list {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  /* gap: var(--gutter); */
+}
+
+.stack-button-list > * {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 40%;
+}
+
+.stack-button-list > :first-child {
+  margin-top: var(--gutter);
+}
+
+.switcher > * {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: var(--gutter);
+}
+
+.switcher > * > * {
+  flex-grow: 1;
+  text-wrap: wrap;
+  word-break: break-all;
+  flex-basis: calc((20rem - 100%) * 999); 
+
 }
