@@ -169,11 +169,13 @@ function setNode(root) {
 }
 
 function createButton(node, name, func) {
-  const btn = document.createElement('button');
-  btn.setAttribute('data-func', name);
-  btn.innerText = name;
-  btn.addEventListener('click', func);
-  node.appendChild(btn);
+  const wrapper = document.createElement('button');
+  const nameArea = document.createElement('div');
+  wrapper.setAttribute('data-func', name);
+  nameArea.innerText = name;
+  wrapper.addEventListener('click', func);
+  wrapper.appendChild(nameArea);
+  node.appendChild(wrapper);
 }
 
 let imgLoaded = [];
