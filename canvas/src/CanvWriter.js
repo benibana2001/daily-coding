@@ -34,9 +34,9 @@ export default class Canv {
   static exeFunc = (name) => {
     Canv.removeOldData();
     Canv.setCanvas();
-    if(Canv.canvas) Canv.ctx = Canv.canvas.getContext('2d');
+    if (Canv.canvas) Canv.ctx = Canv.canvas.getContext('2d');
     // Exec function
-    if(Canv.funcs.get(name)) Canv.funcs.get(name)(Canv.ctx);
+    if (Canv.funcs.get(name)) Canv.funcs.get(name)(Canv.ctx);
 
     // button-active
     const buttons = document.querySelectorAll(`[data-func]`);
@@ -59,6 +59,15 @@ export default class Canv {
 
     if (Canv.events) Canv.removeEvents();
     if (Canv.eventsCanvas) Canv.removeCanvasEvents();
+
+    // REMOVE CANVAS ELEMENT
+    /* p5.jsでCreateCanvasするとインラインにstyleの
+     * widthが強制的に書かれて他の関数実行に影響を及ぼすため
+     * canvasごと削除するのが合理的 */
+    if (Canv.canvas) {
+      Canv.canvas.remove();
+      Canv.canvas = null;
+    }
   };
 
   static setCanvas = (
@@ -67,7 +76,7 @@ export default class Canv {
   ) => {
     if (!Canv.canvas) {
       Canv.canvas = document.createElement('canvas');
-      if(Canv.canvasRoot) Canv.canvasRoot.appendChild(Canv.canvas);
+      if (Canv.canvasRoot) Canv.canvasRoot.appendChild(Canv.canvas);
     }
     setCanvSize(Canv.canvas)(w)(h);
   };
