@@ -1,3 +1,5 @@
+import Controller from "./Controller.js";
+
 export default class Canv {
   static canvas = document.querySelector('#canvas-root canvas');
   static canvasRoot = document.querySelector('#canvas-root');
@@ -8,35 +10,35 @@ export default class Canv {
     h: 600
   };
 
-  static funcs = new Map();
-  static currentFuncID;
+  static commands = new Map();
+  static currentCommandID;
 
   static events = [];
   static eventsCanvas = [];
 
-  static addFunc = (funcs) => {
-    for (const func of funcs) {
-      const name = func.name;
-      Canv.funcs.set(name, func);
-      createButton(this.buttonRoot, name, () => Canv.exeFunc(name));
+  static addCommands = (commands) => {
+    for (const c of commands) {
+      const name = c.name;
+      Canv.commands.set(name, c);
+      createButton(this.buttonRoot, name, () => Canv.execute(name));
     }
-    Canv.defaultFunc(funcs[funcs.length - 1].name);
+    Canv.defaultCommand(commands[commands.length - 1].name);
   };
 
-  static defaultFunc = (name) => {
+  static defaultCommand = (name) => {
     name = location.search ? location.search.slice(1) : name;
-    Canv.exeFunc(name);
+    Canv.execute(name);
   };
 
   static waitResolveImgs = async () => await waitResolveImgs();
   static createImg = (path) => createImg(path);
 
-  static exeFunc = (name) => {
+  static execute = (name) => {
     Canv.removeOldData();
     Canv.setCanvas();
     if (Canv.canvas) Canv.ctx = Canv.canvas.getContext('2d');
-    // Exec function
-    if (Canv.funcs.get(name)) Canv.funcs.get(name)(Canv.ctx);
+    // Exec commands
+    if (Canv.commands.get(name)) Canv.commands.get(name)(Canv.ctx);
 
     // button-active
     const buttons = document.querySelectorAll(`[data-func]`);
@@ -50,9 +52,9 @@ export default class Canv {
 
   static removeOldData = () => {
     // Remove old function, imgPromises, Events
-    if (Canv.currentFuncID) {
-      cancelAnimationFrame(Canv.currentFuncID);
-      Canv.currentFuncID = 0;
+    if (Canv.currentCommandID) {
+      cancelAnimationFrame(Canv.currentCommandID);
+      Canv.currentCommandID = 0;
     }
 
     clearImgLoaded();
@@ -82,12 +84,12 @@ export default class Canv {
   };
 
   static cancelLoop = () => {
-    if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID);
+    if (Canv.currentCommandID) cancelAnimationFrame(Canv.currentCommandID);
   };
 
   // Wrapper func for loop animation
   static loop = (f) => {
-    if (Canv.currentFuncID) cancelAnimationFrame(Canv.currentFuncID);
+    if (Canv.currentCommandID) cancelAnimationFrame(Canv.currentCommandID);
 
     const requestAnimFrame = (() =>
       window.requestAnimationFrame ||
@@ -95,11 +97,11 @@ export default class Canv {
       ((callback) => window.setTimeout(callback, 1000 / 60)))();
 
     const repeat = () => {
-      Canv.currentFuncID = requestAnimFrame(repeat);
+      Canv.currentCommandID = requestAnimFrame(repeat);
       f();
     };
 
-    Canv.currentFuncID = requestAnimFrame(repeat);
+    Canv.currentCommandID = requestAnimFrame(repeat);
   };
 
   // Add event listner
@@ -166,15 +168,7 @@ export default class Canv {
 
   static deviceTrigger = () => deviceTrigger();
   static getTouchPosition = (e) => getTouchPosition(e);
-}
 
-let rootNode = null;
-let btnListNode = null;
-
-function setNode(root) {
-  rootNode = root;
-  btnListNode = document.createElement('div');
-  rootNode.appendChild(btnListNode);
 }
 
 function createButton(node, name, func) {
