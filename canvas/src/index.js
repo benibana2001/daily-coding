@@ -1,5 +1,4 @@
 import Canv from './CanvWriter.js';
-import Controller from './Controller.js'
 import particle from './canvases/particleSnow.js';
 import dotPattern from './canvases/dotPattern.js';
 import yasumijikan from './canvases/yasumijikan.js';

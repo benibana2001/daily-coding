@@ -1,5 +1,3 @@
-import Controller from "./Controller.js";
-
 export default class Canv {
   static canvas = document.querySelector('#canvas-root canvas');
   static canvasRoot = document.querySelector('#canvas-root');
@@ -273,44 +271,6 @@ const frameCalc =
       if (current < (i + 1) * speed) return framesData[currentFrame];
     }
   };
-
-const arrowKeydownHandler = (funcs) => (e) => {
-  const isArrowKey = (e) => e.key.slice(0, 5) === 'Arrow';
-  if (isArrowKey(e)) e.preventDefault();
-  switch (e.key) {
-    case 'ArrowRight':
-      if (funcs.right) funcs.right();
-      break;
-    case 'ArrowLeft':
-      if (funcs.left) funcs.left();
-      break;
-    case 'ArrowUp':
-      if (funcs.up) funcs.up();
-      break;
-    case 'ArrowDown':
-      if (funcs.down) funcs.down();
-      break;
-  }
-};
-
-const arrowKeyUpHandler = (funcs) => (e) => {
-  const isArrowKey = (e) => e.key.slice(0, 5) === 'Arrow';
-  if (isArrowKey(e)) e.preventDefault();
-  switch (e.key) {
-    case 'ArrowRight':
-      if (funcs.right) funcs.right();
-      break;
-    case 'ArrowLeft':
-      if (funcs.left) funcs.left();
-      break;
-    case 'ArrowUp':
-      if (funcs.up) funcs.up();
-      break;
-    case 'ArrowDown':
-      if (funcs.down) funcs.down();
-      break;
-  }
-};
 
 function flipImage(image) {
   const canv = document.createElement('canvas');
