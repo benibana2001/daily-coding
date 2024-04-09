@@ -1,11 +1,11 @@
 export default class Canv {
-  static canvas = document.querySelector('#canvas-root canvas');
-  static canvasRoot = document.querySelector('#canvas-root');
-  static buttonRoot = document.getElementById('button-list');
+  static canvas = document.querySelector("#canvas-root canvas");
+  static canvasRoot = document.querySelector("#canvas-root");
+  static buttonRoot = document.getElementById("button-list");
   static ctx;
   static defaultCanvasSize = {
-    w: window.innerWidth,
-    h: 600
+    w: 600,
+    h: 600,
   };
 
   static commands = new Map();
@@ -34,18 +34,18 @@ export default class Canv {
   static execute = (name) => {
     Canv.removeOldData();
     Canv.setCanvas();
-    if (Canv.canvas) Canv.ctx = Canv.canvas.getContext('2d');
+    if (Canv.canvas) Canv.ctx = Canv.canvas.getContext("2d");
     // Exec commands
     if (Canv.commands.get(name)) Canv.commands.get(name)(Canv.ctx);
 
     // button-active
     const buttons = document.querySelectorAll(`[data-func]`);
     buttons.forEach((elem) => {
-      elem.classList.remove('button-active');
+      elem.classList.remove("button-active");
     });
     document
       .querySelector(`[data-func="${name}"]`)
-      ?.classList.add('button-active');
+      ?.classList.add("button-active");
   };
 
   static removeOldData = () => {
@@ -75,7 +75,7 @@ export default class Canv {
     h = Canv.defaultCanvasSize.h
   ) => {
     if (!Canv.canvas) {
-      Canv.canvas = document.createElement('canvas');
+      Canv.canvas = document.createElement("canvas");
       if (Canv.canvasRoot) Canv.canvasRoot.appendChild(Canv.canvas);
     }
     setCanvSize(Canv.canvas)(w)(h);
@@ -126,6 +126,11 @@ export default class Canv {
 
   static drawBG = (color, clear = true) => drawBG(Canv.ctx, color, clear);
   static drawArc = (x, y, r, color) => drawArc(Canv.ctx, x, y, r, color);
+  static drawRect = (x, y, w, h, color) =>
+    drawRect(Canv.ctx, x, y, w, h, color);
+  static drawText = (text, x, y, color) =>
+    drawText(Canv.ctx, text, x, y, color);
+  static measureText = (text) => Canv.ctx.measureText(text).width;
 
   static particle = (O) => (size) => (col) => particle(O)(size)(col);
   static moveParticle = (O) => (size) => (col) => (V) =>
@@ -166,15 +171,14 @@ export default class Canv {
 
   static deviceTrigger = () => deviceTrigger();
   static getTouchPosition = (e) => getTouchPosition(e);
-
 }
 
 function createButton(node, name, func) {
-  const wrapper = document.createElement('button');
-  const nameArea = document.createElement('div');
-  wrapper.setAttribute('data-func', name);
+  const wrapper = document.createElement("button");
+  const nameArea = document.createElement("div");
+  wrapper.setAttribute("data-func", name);
   nameArea.innerText = name;
-  wrapper.addEventListener('click', func);
+  wrapper.addEventListener("click", func);
   wrapper.appendChild(nameArea);
   node.appendChild(wrapper);
 }
@@ -218,6 +222,18 @@ function drawArc(context, x, y, r, color) {
   context.fill();
 }
 
+function drawRect(context, x, y, w, h, color) {
+  context.beginPath();
+  context.rect(x, y, w, h);
+  context.closePath();
+  context.fillStyle = color;
+  context.fill();
+}
+
+function drawText(context, text, x, y, color) {
+  context.fillStyle = color;
+  context.fillText(text, x, y);
+}
 function fitBackgroundScale(context, imgOriginalWidth, maxScale) {
   const canvas = context.canvas;
   const cw = canvas.width;
@@ -251,7 +267,7 @@ function parseAsperiteJSON(data, toArray = false) {
     frameObj.x,
     frameObj.y,
     frameObj.w,
-    frameObj.h
+    frameObj.h,
   ];
   for (let key of Object.keys(frames)) {
     let eachFrame = frames[key].frame;
@@ -273,8 +289,8 @@ const frameCalc =
   };
 
 function flipImage(image) {
-  const canv = document.createElement('canvas');
-  const ctx = canv.getContext('2d');
+  const canv = document.createElement("canvas");
+  const ctx = canv.getContext("2d");
   const newImage = new Image();
   canv.width = image.width;
   canv.height = image.height;
@@ -287,16 +303,16 @@ function flipImage(image) {
 }
 
 const deviceTrigger = () => ({
-  start: isTouchDevice ? 'touchstart' : 'mousedown',
-  end: isTouchDevice ? 'touchend' : 'mouseup'
+  start: isTouchDevice ? "touchstart" : "mousedown",
+  end: isTouchDevice ? "touchend" : "mouseup",
 });
 
 const getTouchPosition = (e) => ({
   x: isTouchDevice ? e.changedTouches[0].pageX : e.pageX,
-  y: isTouchDevice ? e.changedTouches[0].pageY : e.pageY
+  y: isTouchDevice ? e.changedTouches[0].pageY : e.pageY,
 });
 
-const isTouchDevice = 'ontouchend' in document;
+const isTouchDevice = "ontouchend" in document;
 
 // Device check
 //

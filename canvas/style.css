@@ -44,7 +44,7 @@ h1 {
 canvas {
   display: block;
   max-width: 100%;
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 button {
