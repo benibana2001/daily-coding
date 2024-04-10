@@ -1,79 +1,31 @@
 import { ImageLoader } from "./ImageLoader";
-const imageLoader = new ImageLoader();
 
 export default class Canv {
   static canvas = document.querySelector("#canvas-root canvas");
   static canvasRoot = document.querySelector("#canvas-root");
-  static buttonRoot = document.getElementById("button-list");
   static ctx;
   static defaultCanvasSize = {
     w: 600,
     h: 600,
   };
-
-  static commands = new Map();
-  static currentCommandID;
-
+  static currentLoopAnimationID = 0;
   static events = [];
   static eventsCanvas = [];
+  static requestAnimFrame = () =>
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    ((callback) => window.setTimeout(callback, 1000 / 60));
 
-  static createButton = (node, name, func) => {
-    const wrapper = document.createElement("button");
-    const nameArea = document.createElement("div");
-    wrapper.setAttribute("data-func", name);
-    nameArea.innerText = name;
-    wrapper.addEventListener("click", func);
-    wrapper.appendChild(nameArea);
-    node.appendChild(wrapper);
-  };
+  static cancelCurrentCommand() {
+    cancelAnimationFrame(this.currentLoopAnimationID);
+    this.currentLoopAnimationID = 0;
+  }
+  static imageLoader = new ImageLoader();
 
-  static addCommands = (commands) => {
-    for (const c of commands) {
-      const name = c.name;
-      Canv.commands.set(name, c);
-      Canv.createButton(this.buttonRoot, name, () => Canv.execute(name));
-    }
-    Canv.defaultCommand(commands[commands.length - 1].name);
-  };
+  static waitResolveImgs = async () => await Canv.imageLoader.waitResolveImgs();
+  static createImg = (path) => Canv.imageLoader.createImg(path);
 
-  static defaultCommand = (name) => {
-    name = location.search ? location.search.slice(1) : name;
-    Canv.execute(name);
-  };
-
-  static waitResolveImgs = async () => await imageLoader.waitResolveImgs();
-  static createImg = (path) => imageLoader.createImg(path);
-
-  static execute = (name) => {
-    Canv.removeOldData();
-    Canv.setCanvas();
-    if (Canv.canvas) Canv.ctx = Canv.canvas.getContext("2d");
-    // Exec commands
-    if (Canv.commands.get(name)) Canv.commands.get(name)(Canv.ctx);
-
-    // button-active
-    const buttons = document.querySelectorAll(`[data-func]`);
-    buttons.forEach((elem) => {
-      elem.classList.remove("button-active");
-    });
-    document
-      .querySelector(`[data-func="${name}"]`)
-      ?.classList.add("button-active");
-  };
-
-  static removeOldData = () => {
-    // Remove old function, imgPromises, Events
-    if (Canv.currentCommandID) {
-      cancelAnimationFrame(Canv.currentCommandID);
-      Canv.currentCommandID = 0;
-    }
-
-    imageLoader.clearImageLoaded();
-
-    if (Canv.events) Canv.removeEvents();
-    if (Canv.eventsCanvas) Canv.removeCanvasEvents();
-
-    // REMOVE CANVAS ELEMENT
+  static removeCanvas = () => {
     /* p5.jsでCreateCanvasするとインラインにstyleの
      * widthが強制的に書かれて他の関数実行に影響を及ぼすため
      * canvasごと削除するのが合理的 */
@@ -87,32 +39,30 @@ export default class Canv {
     w = Canv.defaultCanvasSize.w,
     h = Canv.defaultCanvasSize.h
   ) => {
-    if (!Canv.canvas) {
+    if (!Canv.canvas) {// Canvasを新規作成
       Canv.canvas = document.createElement("canvas");
-      if (Canv.canvasRoot) Canv.canvasRoot.appendChild(Canv.canvas);
+      Canv.canvasRoot.appendChild(Canv.canvas);
     }
-    setCanvSize(Canv.canvas)(w)(h);
+    Canv.ctx = Canv.canvas.getContext("2d");
+    Canv.canvas.width = w;
+    Canv.canvas.height = h;
   };
 
   static cancelLoop = () => {
-    if (Canv.currentCommandID) cancelAnimationFrame(Canv.currentCommandID);
+    if (Canv.currentLoopAnimationID)
+      cancelAnimationFrame(Canv.currentLoopAnimationID);
   };
 
   // Wrapper func for loop animation
   static loop = (f) => {
-    if (Canv.currentCommandID) cancelAnimationFrame(Canv.currentCommandID);
-
-    const requestAnimFrame = (() =>
-      window.requestAnimationFrame ||
-      window.webkitRequestAnimationFrame ||
-      ((callback) => window.setTimeout(callback, 1000 / 60)))();
+    Canv.cancelLoop();
 
     const repeat = () => {
-      Canv.currentCommandID = requestAnimFrame(repeat);
+      Canv.currentLoopAnimationID = Canv.requestAnimFrame()(repeat);
       f();
     };
 
-    Canv.currentCommandID = requestAnimFrame(repeat);
+    Canv.currentLoopAnimationID = Canv.requestAnimFrame()(repeat);
   };
 
   // Add event listner
@@ -233,11 +183,6 @@ export default class Canv {
   static getTouchPosition = (e) => getTouchPosition(e);
 }
 
-const setCanvSize = (canvas) => (x) => (y) => {
-  if (x) canvas.width = x;
-  if (y) canvas.height = y;
-};
-
 function parseAsperiteJSON(data, toArray = false) {
   const frames = data.frames;
   let ary = [];
@@ -265,7 +210,6 @@ const frameCalc =
       if (current < (i + 1) * speed) return framesData[currentFrame];
     }
   };
-
 
 const deviceTrigger = () => ({
   start: isTouchDevice ? "touchstart" : "mousedown",
