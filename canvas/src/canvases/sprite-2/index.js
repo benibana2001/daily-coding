@@ -1,10 +1,10 @@
-import Canv from '../../CanvWriter.js'
+import Canvas from '../../Canvas.js'
 import catData from './cat.js'
 import catImage from '../../assets/cat.png'
 
 const sprite_2 = async (c) => {
-  const imgCat = Canv.createImg(catImage)
-  await Canv.waitResolveImgs()
+  const imgCat = Canvas.createImg(catImage)
+  await Canvas.waitResolveImgs()
 
   class Asep {
     static parse = (data) => {
@@ -25,7 +25,7 @@ const sprite_2 = async (c) => {
   const displaySize = [frames[0][2], frames[0][3]]
 
   let tick = 0
-  Canv.loop(() => {
+  Canvas.loop(() => {
     draw()
     updateSprite()
   })

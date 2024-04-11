@@ -1,7 +1,7 @@
-import Canv from "../CanvWriter.js";
+import Canvas from "../Canvas.js";
 
 const commandPattern = async () => {
-  Canv.drawBG(Canv.randomRGBA(0.2));
+  Canvas.drawBG(Canvas.randomRGBA(0.2));
 
   class Button {
     constructor(x, y, r, color, equipSlot, item) {
@@ -13,11 +13,11 @@ const commandPattern = async () => {
       this.item = item;
     }
     render() {
-      Canv.drawArc(this.x, this.y, this.r, this.color);
-      Canv.ctx.font = '14px sans-serif'
-      const textPositionX = this.x - Canv.measureText(this.item.name) / 2;
+      Canvas.drawArc(this.x, this.y, this.r, this.color);
+      Canvas.ctx.font = '14px sans-serif'
+      const textPositionX = this.x - Canvas.measureText(this.item.name) / 2;
       const textPositionY = this.y + 7
-      Canv.drawText(this.item.name, textPositionX, textPositionY, "white");
+      Canvas.drawText(this.item.name, textPositionX, textPositionY, "white");
     }
     judgeClick(e) {
       if (this.isClicked(e)) {
@@ -25,12 +25,12 @@ const commandPattern = async () => {
       }
     }
     isClicked(e) {
-      const ratioX = Canv.defaultCanvasSize.w / Canv.canvas.clientWidth;
-      const ratioY = Canv.defaultCanvasSize.h / Canv.canvas.clientHeight;
+      const ratioX = Canvas.defaultCanvasSize.w / Canvas.canvas.clientWidth;
+      const ratioY = Canvas.defaultCanvasSize.h / Canvas.canvas.clientHeight;
       const touchedX =
-        (Canv.getTouchPosition(e).x - Canv.canvas.offsetLeft) * ratioX;
+        (Canvas.getTouchPosition(e).x - Canvas.canvas.offsetLeft) * ratioX;
       const touchedY =
-        (Canv.getTouchPosition(e).y - Canv.canvas.offsetTop) * ratioY;
+        (Canvas.getTouchPosition(e).y - Canvas.canvas.offsetTop) * ratioY;
       if (!touchedX || !touchedY) return false;
 
       /** 領域内をクリックしたとき */
@@ -53,12 +53,12 @@ const commandPattern = async () => {
       this.messageBox = messageBox
     }
     isClicked(e) {
-      const ratioX = Canv.defaultCanvasSize.w / Canv.canvas.clientWidth;
-      const ratioY = Canv.defaultCanvasSize.h / Canv.canvas.clientHeight;
+      const ratioX = Canvas.defaultCanvasSize.w / Canvas.canvas.clientWidth;
+      const ratioY = Canvas.defaultCanvasSize.h / Canvas.canvas.clientHeight;
       const touchedX =
-        (Canv.getTouchPosition(e).x - Canv.canvas.offsetLeft) * ratioX;
+        (Canvas.getTouchPosition(e).x - Canvas.canvas.offsetLeft) * ratioX;
       const touchedY =
-        (Canv.getTouchPosition(e).y - Canv.canvas.offsetTop) * ratioY;
+        (Canvas.getTouchPosition(e).y - Canvas.canvas.offsetTop) * ratioY;
       if (!touchedX || !touchedY) return false;
 
       /** 領域内をクリックしたとき */
@@ -70,13 +70,13 @@ const commandPattern = async () => {
       return false;
     }
     render() {
-      Canv.drawArc(this.x, this.y, this.r, this.color);
+      Canvas.drawArc(this.x, this.y, this.r, this.color);
       const text = this.item ? this.item.name : '装備なし'
-      Canv.ctx.font = '30px sans-serif'
-      const textPositionX = this.x - Canv.measureText(text) / 2;
+      Canvas.ctx.font = '30px sans-serif'
+      const textPositionX = this.x - Canvas.measureText(text) / 2;
       const textPositionY = this.y + 15
       
-      Canv.drawText(text, textPositionX, textPositionY, "#222222");
+      Canvas.drawText(text, textPositionX, textPositionY, "#222222");
     }
     judgeClick(e) {
       if (this.isClicked(e)) {
@@ -127,9 +127,9 @@ const commandPattern = async () => {
       this.message = message 
     }
     render(){
-      Canv.drawRect(this.x, this.y, this.w, this.h, this.color)
-      Canv.ctx.font = '30px sans-serif'
-      Canv.drawText(this.message, this.x + 15, this.y + 30,this.textColor)
+      Canvas.drawRect(this.x, this.y, this.w, this.h, this.color)
+      Canvas.ctx.font = '30px sans-serif'
+      Canvas.drawText(this.message, this.x + 15, this.y + 30,this.textColor)
     }
     setMessage(message){
       this.message = message
@@ -147,8 +147,8 @@ const commandPattern = async () => {
   slot.render()
   messageBox.render()
 
-  Canv.registerCanvasEvent(
-    Canv.deviceTrigger().start,
+  Canvas.registerCanvasEvent(
+    Canvas.deviceTrigger().start,
     (e) => {
       b1.judgeClick(e);
       b2.judgeClick(e);

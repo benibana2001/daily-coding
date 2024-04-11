@@ -1,14 +1,14 @@
-import Canv from '../CanvWriter.js'
+import Canvas from '../Canvas.js'
 
 const dotPattern = (c) => {
-  const cw = Canv.canvas.width
-  const ch = Canv.canvas.height
+  const cw = Canvas.canvas.width
+  const ch = Canvas.canvas.height
   const particle = () => {
     return [
       Math.random() * cw,
       Math.random() * ch,
       ch > cw ? Math.random() * cw / 5 : Math.random() * ch / 5,
-      Canv.randomRGBA(Math.random() * 1.0)
+      Canvas.randomRGBA(Math.random() * 1.0)
     ]
   }
 
@@ -22,18 +22,18 @@ const dotPattern = (c) => {
 
   const drawParticles = () => {
     for (let i = 0, ps = particles(); i < ps.length; i++) {
-      Canv.drawArc(...ps[i])
+      Canvas.drawArc(...ps[i])
     }
   }
 
   const draw = () => {
-    Canv.drawBG(Canv.randomRGBA(0.1))
+    Canvas.drawBG(Canvas.randomRGBA(0.1))
     drawParticles()
   }
 
   draw()
-  // Canv.canvas.addEventListener('click', () => draw())
-  Canv.registerCanvasEvent('click', () => draw())
+  // Canvas.canvas.addEventListener('click', () => draw())
+  Canvas.registerCanvasEvent('click', () => draw())
 }
 
 

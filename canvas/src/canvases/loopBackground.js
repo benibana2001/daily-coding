@@ -1,19 +1,19 @@
-import Canv from '../CanvWriter.js'
+import Canvas from '../Canvas.js'
 import img_perse from '../assets/snow_perse.png'
 
 const loopBackground = async () => {
-  const imgPerse = Canv.createImg(img_perse) // w:360, h:180
-  await Canv.waitResolveImgs()
+  const imgPerse = Canvas.createImg(img_perse) // w:360, h:180
+  await Canvas.waitResolveImgs()
 
-  Canv.drawBG('black')
-  Canv.canvas.width = 720
-  Canv.fitBackgroundScale(360, 2)
+  Canvas.drawBG('black')
+  Canvas.canvas.width = 720
+  Canvas.fitBackgroundScale(360, 2)
 
   const size = { w: 360, h: 180 }
 
   const drawFunction = drawMoveImage()
 
-  Canv.loop(drawFunction)
+  Canvas.loop(drawFunction)
 
   function drawMoveImage() {
     let vx = 0
@@ -31,13 +31,13 @@ const loopBackground = async () => {
         back: { x: 360 - vx, y: 0 }
       }
 
-      Canv.drawImage(
+      Canvas.drawImage(
         imgPerse,
         { x: 0, y: 0, ...size },
         { ...position.fore, ...size }
       )
 
-      Canv.drawImage(
+      Canvas.drawImage(
         imgPerse,
         { x: 0, y: 0, ...size },
         { ...position.back, ...size }

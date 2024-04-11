@@ -1,10 +1,10 @@
-import Canv from '../../CanvWriter.js'
+import Canvas from '../../Canvas.js'
 import catData from './cat.js'
 import catImage from '../../assets/cat.png'
 
 const sprite = async (c) => {
-  const imgCat = Canv.createImg(catImage)
-  await Canv.waitResolveImgs()
+  const imgCat = Canvas.createImg(catImage)
+  await Canvas.waitResolveImgs()
 
   let tickC = 0
   //
@@ -12,7 +12,7 @@ const sprite = async (c) => {
   let frameC = 0
   let xC = 0
 
-  Canv.loop(() => {
+  Canvas.loop(() => {
     xC = frameC * sizeC
     const sourceC = [xC, 0, sizeC, sizeC]
     const displayAreaC = [0, 0, sizeC, sizeC]

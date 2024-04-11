@@ -1,6 +1,6 @@
-import Canv from '../CanvWriter.js'
+import Canvas from '../Canvas.js'
 const cursor = () => {
-  const p = Canv.moveParticle({ x: 100, y: 100 })(30)('white')
+  const p = Canvas.moveParticle({ x: 100, y: 100 })(30)('white')
   const move = ((speed) => ({
     up: { x: 0, y: -speed },
     down: { x: 0, y: speed },
@@ -9,9 +9,9 @@ const cursor = () => {
     constant: { x: 0, y: 0 }
   }))(8)
   let direction = move.constant
-  Canv.loop(() => {
-    Canv.drawBG('black')
-    Canv.drawArc(...p(direction))
+  Canvas.loop(() => {
+    Canvas.drawBG('black')
+    Canvas.drawArc(...p(direction))
   })
   const downHandler = (e) => {
     const isArwKey = e => e.key.slice(0, 5) === 'Arrow'
@@ -28,8 +28,8 @@ const cursor = () => {
         direction = move.left; break
     }
   }
-  Canv.registerEvent('keydown', downHandler)
-  Canv.registerEvent('keyup', () => {direction = move.constant})
+  Canvas.registerEvent('keydown', downHandler)
+  Canvas.registerEvent('keyup', () => {direction = move.constant})
 }
 
 export default cursor

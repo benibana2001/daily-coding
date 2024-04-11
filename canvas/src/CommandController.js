@@ -1,9 +1,9 @@
-import Canv from "./CanvWriter";
+import Canvas from "./Canvas";
 
 export class CommandController {
   constructor() {
     this.commands = new Map(); // 実行する関数を格納する
-    this.Canv = Canv;
+    this.Canvas = Canvas;
   }
   addCommands(commandArray) {
     for (const func of commandArray) {
@@ -12,9 +12,9 @@ export class CommandController {
     }
   }
   execute(name, canvasCtx) {
-    Canv.removeCanvas();
-    Canv.cancelCurrentCommand();
-    Canv.setCanvas();
+    Canvas.removeCanvas();
+    Canvas.cancelCurrentCommand();
+    Canvas.setCanvas();
 
     const command = this.commands.get(name) || null;
     if (command) {

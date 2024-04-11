@@ -1,16 +1,16 @@
 import p5 from 'p5';
-import Canv from '../CanvWriter';
+import Canvas from '../Canvas';
 const p5_P2DRender = (c) => {
   let cw = 400;
   let ch = 400;
-  Canv.setCanvas(cw, ch);
+  Canvas.setCanvas(cw, ch);
 
   const sketch = (p) => {
     const MAX_COUNT = 1;
     let x = [];
     let y = [];
     p.setup = function () {
-      p.createCanvas(cw, ch, p5.P2D, Canv.canvas);
+      p.createCanvas(cw, ch, p5.P2D, Canvas.canvas);
       p.background(0);
       for (let i = 0; i < MAX_COUNT; i++) {
         x[i] = cw / 2;

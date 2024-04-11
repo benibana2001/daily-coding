@@ -1,4 +1,4 @@
-import Canv from "../CanvWriter.js";
+import Canvas from "../Canvas.js";
 import cigarFrameData from "../assets/cigar.js";
 import personFrameData from "../assets/person.js";
 import img_cigar from "../assets/cigar.png";
@@ -9,17 +9,17 @@ import { KeyDownHandler, KeyUpHandler } from "../KeyboardHandler.js";
 
 const yasumijikan = async () => {
   // prepare images
-  const imgPerson = Canv.createImg(img_person);
-  const imgCigar = Canv.createImg(img_cigar);
-  const imgLooftop = Canv.createImg(img_looftop); //  w:200, h: 180
-  const imgBirds = Canv.createImg(img_birds);
+  const imgPerson = Canvas.createImg(img_person);
+  const imgCigar = Canvas.createImg(img_cigar);
+  const imgLooftop = Canvas.createImg(img_looftop); //  w:200, h: 180
+  const imgBirds = Canvas.createImg(img_birds);
 
-  await Canv.waitResolveImgs();
-  const imgPersonFlip = Canv.flipImage(imgPerson);
+  await Canvas.waitResolveImgs();
+  const imgPersonFlip = Canvas.flipImage(imgPerson);
 
   // parse Aseprite frame data
-  const cigarSpritesFrames = Canv.parseAsperiteJSON(cigarFrameData);
-  const personSpritesFrames = Canv.parseAsperiteJSON(personFrameData);
+  const cigarSpritesFrames = Canvas.parseAsperiteJSON(cigarFrameData);
+  const personSpritesFrames = Canvas.parseAsperiteJSON(personFrameData);
 
   const sourceLooftop = {
     x: 0,
@@ -28,7 +28,7 @@ const yasumijikan = async () => {
     h: imgLooftop.height,
   };
 
-  Canv.setCanvas(sourceLooftop.w * 2, sourceLooftop.h * 2);
+  Canvas.setCanvas(sourceLooftop.w * 2, sourceLooftop.h * 2);
 
   const sourceBirds = {
     x: 0,
@@ -49,7 +49,7 @@ const yasumijikan = async () => {
   };
   //
   // birds object
-  let birdsObject = Canv.moveObj()();
+  let birdsObject = Canvas.moveObj()();
   let birdsVelocity = {};
 
   const birdsStartPosition = () => ({
@@ -60,7 +60,7 @@ const yasumijikan = async () => {
   const endPosition = sourceLooftop.w;
 
   const initialBirdsObj = () => {
-    return Canv.moveObj(birdsStartPosition())({
+    return Canvas.moveObj(birdsStartPosition())({
       w: sourceBirds.w,
       h: sourceBirds.h,
     });
@@ -75,11 +75,11 @@ const yasumijikan = async () => {
   birdsVelocity = initialBirdsVelocity();
 
   // Set context scale
-  const scale = Canv.fitBackgroundScale(200, 3);
+  const scale = Canvas.fitBackgroundScale(200, 3);
 
   // draw bird and background
   const backgroundLoop = () => {
-    Canv.drawImage(imgLooftop, sourceLooftop);
+    Canvas.drawImage(imgLooftop, sourceLooftop);
 
     const birdsOutput = birdsObject(birdsVelocity);
 
@@ -88,7 +88,7 @@ const yasumijikan = async () => {
       birdsVelocity = initialBirdsVelocity();
     }
 
-    Canv.drawImage(imgBirds, sourceBirds, birdsOutput);
+    Canvas.drawImage(imgBirds, sourceBirds, birdsOutput);
   };
 
   // Person frame
@@ -173,18 +173,18 @@ const yasumijikan = async () => {
 
   const initialPosition = { x: 102, y: 102 };
 
-  const outputCigar = Canv.moveObj(initialPosition);
+  const outputCigar = Canvas.moveObj(initialPosition);
 
   // Loop function
   let currentOutput = {}; //  For Read
 
   const loopAnimation = (state, nextLoop = null) => {
-    Canv.loop(() => {
+    Canvas.loop(() => {
       backgroundLoop();
 
       currentOutput = outputCigar(state.frameSize)(state.velocity);
 
-      Canv.drawImage(state.image, frameCalc(state)(tickPerson), currentOutput);
+      Canvas.drawImage(state.image, frameCalc(state)(tickPerson), currentOutput);
 
       tickPerson++;
 
@@ -216,8 +216,8 @@ const yasumijikan = async () => {
     e.preventDefault();
 
     const touchedX = canvasPosition
-      ? Canv.getTouchPosition(e).x - canvasPosition?.x
-      : Canv.getTouchPosition(e).x;
+      ? Canvas.getTouchPosition(e).x - canvasPosition?.x
+      : Canvas.getTouchPosition(e).x;
 
     if (touchedX < currentCharaX()) loopAnimation(status.runLeft);
     if (currentCharaX() < touchedX && touchedX < currentCharaX() + charaWidth)
@@ -227,8 +227,8 @@ const yasumijikan = async () => {
 
   const deviceEndHandler = (e) => {
     const removedX = canvasPosition
-      ? Canv.getTouchPosition(e).x - canvasPosition?.x
-      : Canv.getTouchPosition(e).x;
+      ? Canvas.getTouchPosition(e).x - canvasPosition?.x
+      : Canvas.getTouchPosition(e).x;
 
     if (removedX < currentCharaX()) loopAnimation(status.constantLeft);
     if (removedX > currentCharaX()) loopAnimation(status.constantRight);
@@ -236,11 +236,11 @@ const yasumijikan = async () => {
 
   // Attach Event handler
   const attachCharaEvents = () => {
-    Canv.registerCanvasEvent(Canv.deviceTrigger().start, deviceStartHandler, {
+    Canvas.registerCanvasEvent(Canvas.deviceTrigger().start, deviceStartHandler, {
       passive: false,
     });
-    Canv.registerCanvasEvent(Canv.deviceTrigger().end, deviceEndHandler);
-    Canv.registerEvent("keydown", (e) => {
+    Canvas.registerCanvasEvent(Canvas.deviceTrigger().end, deviceEndHandler);
+    Canvas.registerEvent("keydown", (e) => {
       KeyDownHandler(
         {
           right: () => loopAnimation(status.runRight),
@@ -254,7 +254,7 @@ const yasumijikan = async () => {
       );
     });
 
-    Canv.registerEvent("keyup", (e) => {
+    Canvas.registerEvent("keyup", (e) => {
       KeyUpHandler(
         {
           right: () => loopAnimation(status.constantRight),
@@ -266,8 +266,8 @@ const yasumijikan = async () => {
   };
 
   const detachCharaEvents = () => {
-    Canv.removeCanvasEvents();
-    Canv.removeEvents();
+    Canvas.removeCanvasEvents();
+    Canvas.removeEvents();
   };
 
   attachCharaEvents();

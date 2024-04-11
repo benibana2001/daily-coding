@@ -1,6 +1,6 @@
 import { ImageLoader } from "./ImageLoader";
 
-export default class Canv {
+export default class Canvas {
   static canvas = document.querySelector("#canvas-root canvas");
   static canvasRoot = document.querySelector("#canvas-root");
   static ctx;
@@ -22,80 +22,80 @@ export default class Canv {
   }
   static imageLoader = new ImageLoader();
 
-  static waitResolveImgs = async () => await Canv.imageLoader.waitResolveImgs();
-  static createImg = (path) => Canv.imageLoader.createImg(path);
+  static waitResolveImgs = async () => await Canvas.imageLoader.waitResolveImgs();
+  static createImg = (path) => Canvas.imageLoader.createImg(path);
 
   static removeCanvas = () => {
     /* p5.jsでCreateCanvasするとインラインにstyleの
      * widthが強制的に書かれて他の関数実行に影響を及ぼすため
      * canvasごと削除するのが合理的 */
-    if (Canv.canvas) {
-      Canv.canvas.remove();
-      Canv.canvas = null;
+    if (Canvas.canvas) {
+      Canvas.canvas.remove();
+      Canvas.canvas = null;
     }
   };
 
   static setCanvas = (
-    w = Canv.defaultCanvasSize.w,
-    h = Canv.defaultCanvasSize.h
+    w = Canvas.defaultCanvasSize.w,
+    h = Canvas.defaultCanvasSize.h
   ) => {
-    if (!Canv.canvas) {// Canvasを新規作成
-      Canv.canvas = document.createElement("canvas");
-      Canv.canvasRoot.appendChild(Canv.canvas);
+    if (!Canvas.canvas) {// Canvasを新規作成
+      Canvas.canvas = document.createElement("canvas");
+      Canvas.canvasRoot.appendChild(Canvas.canvas);
     }
-    Canv.ctx = Canv.canvas.getContext("2d");
-    Canv.canvas.width = w;
-    Canv.canvas.height = h;
+    Canvas.ctx = Canvas.canvas.getContext("2d");
+    Canvas.canvas.width = w;
+    Canvas.canvas.height = h;
   };
 
   static cancelLoop = () => {
-    if (Canv.currentLoopAnimationID)
-      cancelAnimationFrame(Canv.currentLoopAnimationID);
+    if (Canvas.currentLoopAnimationID)
+      cancelAnimationFrame(Canvas.currentLoopAnimationID);
   };
 
   // Wrapper func for loop animation
   static loop = (f) => {
-    Canv.cancelLoop();
+    Canvas.cancelLoop();
 
     const repeat = () => {
-      Canv.currentLoopAnimationID = Canv.requestAnimFrame()(repeat);
+      Canvas.currentLoopAnimationID = Canvas.requestAnimFrame()(repeat);
       f();
     };
 
-    Canv.currentLoopAnimationID = Canv.requestAnimFrame()(repeat);
+    Canvas.currentLoopAnimationID = Canvas.requestAnimFrame()(repeat);
   };
 
   // Add event listner
   static registerEvent = (type, func, options = null) => {
-    Canv.events.push([type, func]);
+    Canvas.events.push([type, func]);
     window.addEventListener(type, func, options);
   };
   static removeEvents = () => {
-    for (let e of Canv.events) {
+    for (let e of Canvas.events) {
       window.removeEventListener(e[0], e[1]);
     }
   };
 
   static registerCanvasEvent = (type, func, options = null) => {
-    Canv.eventsCanvas.push([type, func]);
-    Canv.canvas.addEventListener(type, func, options);
+    Canvas.eventsCanvas.push([type, func]);
+    Canvas.canvas.addEventListener(type, func, options);
   };
 
   static removeCanvasEvents = () => {
-    for (let e of Canv.eventsCanvas) {
-      Canv.canvas.removeEventListener(e[0], e[1]);
+    for (let e of Canvas.eventsCanvas) {
+      Canvas.canvas.removeEventListener(e[0], e[1]);
     }
   };
 
   static drawBG = (color, clear = true) => {
-    const canvas = Canv.ctx.canvas;
-    const clearBG = () => Canv.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const canvas = Canvas.ctx.canvas;
+    const clearBG = () => Canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (clear) clearBG();
-    Canv.ctx.fillStyle = color;
-    Canv.ctx.fillRect(0, 0, canvas.width, canvas.height);
+    Canvas.ctx.fillStyle = color;
+    Canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);
   };
   static drawArc = (x, y, r, color) => {
-    const context = Canv.ctx;
+    const context = Canvas.ctx;
     context.beginPath();
     context.arc(x, y, r, 0, Math.PI * 2);
     context.closePath();
@@ -104,7 +104,7 @@ export default class Canv {
   };
 
   static drawRect = (x, y, w, h, color) => {
-    const context = Canv.ctx;
+    const context = Canvas.ctx;
     context.beginPath();
     context.rect(x, y, w, h);
     context.closePath();
@@ -113,12 +113,12 @@ export default class Canv {
   };
 
   static drawText = (text, x, y, color) => {
-    const context = Canv.ctx;
+    const context = Canvas.ctx;
     context.fillStyle = color;
     context.fillText(text, x, y);
   };
 
-  static measureText = (text) => Canv.ctx.measureText(text).width;
+  static measureText = (text) => Canvas.ctx.measureText(text).width;
 
   static moveParticle = (O) => (size) => (col) => (V) => {
     O.x += V.x;
@@ -134,14 +134,14 @@ export default class Canv {
   static randomColor = () => Math.random() * 255;
 
   static randomRGBA = (opacity) =>
-    `rgba(${Canv.randomColor()},${Canv.randomColor()},${Canv.randomColor()}, ${opacity})`;
+    `rgba(${Canvas.randomColor()},${Canvas.randomColor()},${Canvas.randomColor()}, ${opacity})`;
   // Parse a json file generated by Aseprite
   //   Default: create each frame as a object, and generate a array with all frames.
   static parseAsperiteJSON = (data, toArray = false) =>
     parseAsperiteJSON(data, toArray);
 
   static drawImage = (source, inputFrame, outputImage = inputFrame) => {
-    Canv.ctx.drawImage(
+    Canvas.ctx.drawImage(
       source,
       ...[inputFrame.x, inputFrame.y, inputFrame.w, inputFrame.h],
       ...[outputImage.x, outputImage.y, outputImage.w, outputImage.h]
@@ -164,7 +164,7 @@ export default class Canv {
   };
 
   static fitBackgroundScale = (imgOriginalWidth, maxScale) => {
-    const context = Canv.ctx;
+    const context = Canvas.ctx;
     const canvas = context.canvas;
     const cw = canvas.width;
     const x =

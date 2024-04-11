@@ -1,13 +1,13 @@
-import Canv from "../CanvWriter.js";
+import Canvas from "../Canvas.js";
 import img_perse from "../assets/snow_perse.png";
 
 const moveBackground = async () => {
-  const imgPerse = Canv.createImg(img_perse); // w:360, h:180
-  await Canv.waitResolveImgs();
+  const imgPerse = Canvas.createImg(img_perse); // w:360, h:180
+  await Canvas.waitResolveImgs();
 
-  Canv.canvas.width = window.innerWidth > 720 ? 720 : window.innerWidth;
+  Canvas.canvas.width = window.innerWidth > 720 ? 720 : window.innerWidth;
 
-  Canv.fitBackgroundScale(360, 2);
+  Canvas.fitBackgroundScale(360, 2);
 
   const size = { w: 360, h: 180 };
 
@@ -29,7 +29,7 @@ const moveBackground = async () => {
     let tick = 0;
     let particles = [];
 
-    Canv.loop(() => {
+    Canvas.loop(() => {
       createParticles();
 
       updateParticles();
@@ -53,7 +53,7 @@ const moveBackground = async () => {
 
       function particle() {
         return {
-          x: Math.random() * Canv.canvas.width,
+          x: Math.random() * Canvas.canvas.width,
           y: 0,
 
           speed: 2 + Math.random() * 3,
@@ -65,7 +65,7 @@ const moveBackground = async () => {
 
     function drawParticles() {
       for (let particle of particles) {
-        Canv.drawArc(particle.x, particle.y, particle.radius, particle.color);
+        Canvas.drawArc(particle.x, particle.y, particle.radius, particle.color);
       }
     }
 
@@ -81,24 +81,24 @@ const moveBackground = async () => {
   }
   // Event
   function keydownHandler(e) {
-    Canv.arrowKeydownHandler({
+    Canvas.arrowKeydownHandler({
       right: () => {
-        Canv.loop(drawMoveBackground);
+        Canvas.loop(drawMoveBackground);
       },
     })(e);
   }
 
   function keyupHandler(e) {
-    Canv.arrowKeyUpHandler({
+    Canvas.arrowKeyUpHandler({
       right: () => {
-        Canv.loop(drawNotMoveBackground);
+        Canvas.loop(drawNotMoveBackground);
       },
     })(e);
   }
 
   function attachEvents() {
-    Canv.registerEvent("keydown", keydownHandler);
-    Canv.registerEvent("keyup", keyupHandler);
+    Canvas.registerEvent("keydown", keydownHandler);
+    Canvas.registerEvent("keyup", keyupHandler);
   }
 
   function drawMoveImage(speed) {
@@ -117,8 +117,8 @@ const moveBackground = async () => {
       drawLoopImage(position, defaultSource);
 
       function drawLoopImage(position, defaultSource) {
-        Canv.drawImage(imgPerse, defaultSource, { ...position.fore, ...size });
-        Canv.drawImage(imgPerse, defaultSource, { ...position.back, ...size });
+        Canvas.drawImage(imgPerse, defaultSource, { ...position.fore, ...size });
+        Canvas.drawImage(imgPerse, defaultSource, { ...position.back, ...size });
       }
     };
 

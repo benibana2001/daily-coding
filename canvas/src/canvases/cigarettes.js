@@ -1,17 +1,17 @@
-import Canv from '../CanvWriter.js'
+import Canvas from '../Canvas.js'
 import cigarFrameData from '../assets/cigar.js'
 import personFrameData from '../assets/person.js'
 import personImage from '../assets/person.png'
 import cigarImage from '../assets/cigar.png'
 const cigarettes = async () => {
-  const imgPerson = Canv.createImg(personImage)
-  const imgCigar = Canv.createImg(cigarImage)
-  await Canv.waitResolveImgs()
-  const imgCigarFlip = Canv.flipImage(imgCigar)
-  const imgPersonFlip = Canv.flipImage(imgPerson)
+  const imgPerson = Canvas.createImg(personImage)
+  const imgCigar = Canvas.createImg(cigarImage)
+  await Canvas.waitResolveImgs()
+  const imgCigarFlip = Canvas.flipImage(imgCigar)
+  const imgPersonFlip = Canvas.flipImage(imgPerson)
   // parse
-  const cigarSpritesFrames = Canv.parseAsperiteJSON(cigarFrameData)
-  const personSpritesFrames = Canv.parseAsperiteJSON(personFrameData)
+  const cigarSpritesFrames = Canvas.parseAsperiteJSON(cigarFrameData)
+  const personSpritesFrames = Canvas.parseAsperiteJSON(personFrameData)
   const cigarFrameSize = { w: cigarSpritesFrames[0].w, h: cigarSpritesFrames[0].h }
   const personFrameSize = { w: personSpritesFrames[0].w, h: personSpritesFrames[0].h }
   // Draw, Loop
@@ -91,15 +91,15 @@ const cigarettes = async () => {
     endTick: status.cigar.frameLength * status.cigar.frameSpeed,
   }
   const initialPosition = { x: 0, y: 0 }
-  const outputCigar = Canv.moveObj(initialPosition)
-  const scale = Canv.fitBackgroundScale(200, 3)
+  const outputCigar = Canvas.moveObj(initialPosition)
+  const scale = Canvas.fitBackgroundScale(200, 3)
   // Loop function
   let currentOutput = {} //  For Read
   const loopAnimation = (state, nextLoop = null) => {
-    Canv.loop(() => {
-      Canv.drawBG('black')
+    Canvas.loop(() => {
+      Canvas.drawBG('black')
       currentOutput = outputCigar(state.frameSize)(state.velocity)
-      Canv.drawImage(state.image, frameCalc(state)(tick), currentOutput)
+      Canvas.drawImage(state.image, frameCalc(state)(tick), currentOutput)
       tick++
       if (nextLoop) {
         if (nextLoop.trigger()) {
@@ -123,13 +123,13 @@ const cigarettes = async () => {
   const currentCharaX = () => currentOutput.x * scale[0]
   const deviceStartHandler = e => {
     e.preventDefault()
-    const touchedX = Canv.getTouchPosition(e).x
+    const touchedX = Canvas.getTouchPosition(e).x
     if (touchedX < currentCharaX()) loopAnimation(status.runLeft)
     if (currentCharaX() < touchedX && touchedX < currentCharaX() + charaWidth) cigarLoop()
     if (currentCharaX() + charaWidth < touchedX) loopAnimation(status.runRight)
   }
   const deviceEndHandler = e => {
-    const removedX = Canv.getTouchPosition(e).x
+    const removedX = Canvas.getTouchPosition(e).x
     if (removedX < currentCharaX()) loopAnimation(status.constantLeft)
     if (removedX > currentCharaX()) loopAnimation(status.constantRight)
   }
@@ -141,27 +141,27 @@ const cigarettes = async () => {
   }
   const keydownHandler = e => {
     spacekeyHandler(e)
-    Canv.arrowKeydownHandler({
+    Canvas.arrowKeydownHandler({
       right: () => loopAnimation(status.runRight),
       left: () => loopAnimation(status.runLeft)
     })(e)
   }
   const keyupHandler = e => {
-    Canv.arrowKeyUpHandler({
+    Canvas.arrowKeyUpHandler({
       right: () => loopAnimation(status.constantRight),
       left: () => loopAnimation(status.constantLeft)
     })(e)
   }
   // Attach Event
   const attachCharaEvent = () => {
-    Canv.registerCanvasEvent(Canv.deviceTrigger().start, deviceStartHandler, { passive: false })
-    Canv.registerCanvasEvent(Canv.deviceTrigger().end, deviceEndHandler)
-    Canv.registerEvent('keydown', keydownHandler)
-    Canv.registerEvent('keyup', keyupHandler)
+    Canvas.registerCanvasEvent(Canvas.deviceTrigger().start, deviceStartHandler, { passive: false })
+    Canvas.registerCanvasEvent(Canvas.deviceTrigger().end, deviceEndHandler)
+    Canvas.registerEvent('keydown', keydownHandler)
+    Canvas.registerEvent('keyup', keyupHandler)
   }
   const removeCharaEvent = () => {
-    Canv.removeCanvasEvents()
-    Canv.removeEvents()
+    Canvas.removeCanvasEvents()
+    Canvas.removeEvents()
   }
   attachCharaEvent()
 }

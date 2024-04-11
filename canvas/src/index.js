@@ -22,5 +22,5 @@ displayDOM.createButtons();
 const lastCommand = commandController.getLastCommand() // 最後に追加されたコマンド
 const initialCommand = location.search ? location.search.slice(1) : lastCommand // 初回実行コマンドを決定
 
-commandController.execute(initialCommand, commandController.Canv.ctx)
+commandController.execute(initialCommand, commandController.Canvas.ctx)
 displayDOM.activateButton(initialCommand)

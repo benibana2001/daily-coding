@@ -1,9 +1,9 @@
-import Canv from '../CanvWriter.js'
+import Canvas from '../Canvas.js'
 
 const particleSnow = (c) => {
   let particles = []
   let tick = 0
-  Canv.loop(() => {
+  Canvas.loop(() => {
     // 最大個数とparticle作成タイミング(frame)を指定 
     createParticles(
       particles.length < 70 &&
@@ -11,7 +11,7 @@ const particleSnow = (c) => {
     )
     updateParticles()
     killParticles()
-    Canv.drawBG('black')
+    Canvas.drawBG('black')
     drawParticles()
   })
 
@@ -19,11 +19,11 @@ const particleSnow = (c) => {
     if (condition) particles.push(particle())
   }
   const particle = () => ({
-    x: Math.random() * Canv.canvas.width,
+    x: Math.random() * Canvas.canvas.width,
     y: 0,
     speed: 2 + Math.random() * 3, //  2 ~ 5
     radius: 5 + Math.random() * 8,
-    color: Canv.randomRGBA(0.3 + Math.random() * 0.5)
+    color: Canvas.randomRGBA(0.3 + Math.random() * 0.5)
   })
   const updateParticles = () => {
     for (let part of particles) {
@@ -33,12 +33,12 @@ const particleSnow = (c) => {
   }
   const killParticles = () => {
     for (let part of particles) {
-      if (part.y > Canv.canvas.height) part.y = 0
+      if (part.y > Canvas.canvas.height) part.y = 0
     }
   }
   const drawParticles = () => {
     for (let part of particles) {
-      Canv.drawArc(part.x, part.y, part.radius, part.color)
+      Canvas.drawArc(part.x, part.y, part.radius, part.color)
     }
   }
 }

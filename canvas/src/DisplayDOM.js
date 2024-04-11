@@ -1,4 +1,4 @@
-import Canv from "./CanvWriter";
+import Canvas from "./Canvas";
 
 export class DisplayDOM {
   constructor(commandController) {
@@ -17,7 +17,7 @@ export class DisplayDOM {
     };
 
     const buttonHandler = (name) => {
-      this.commandController.execute(name, Canv.ctx);
+      this.commandController.execute(name, Canvas.ctx);
       this.activateButton(name);
     };
 
