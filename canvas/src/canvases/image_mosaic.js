@@ -3,8 +3,11 @@ import Canvas from '../Canvas';
 const p5_P2DRender = (c) => {
   let cw = 400;
   let ch = 400;
-  Canvas.setCanvas(cw, ch);
 
+  /**
+   *  Run p5.js with 'instance mode'.
+   *  https://p5js.org/reference/#/p5/p5 
+   */
   const sketch = (p) => {
     const MAX_COUNT = 1;
     let x = [];
