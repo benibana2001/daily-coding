@@ -18,12 +18,13 @@ export class CommandController {
 
     const command = this.commands.get(name) || null;
     if (command) {
-      command(canvasCtx);
+      const p5Instance = command(canvasCtx);
+      // p5.jsのイベントループを外から停止できるように参照を渡しておく
+      Canvas.setP5Instance(p5Instance)
     } else {
       console.warn("No Command was Executed.");
     }
   }
-
 
   defaultCommand(name) {
     name = location.search ? location.search.slice(1) : name;

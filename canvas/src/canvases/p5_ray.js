@@ -24,7 +24,7 @@ const p5_ray = () => {
   let cw = 800,
     ch = 400;
 
-  new p5(sketch);
+  return new p5(sketch);
   /**
    * Sketch
    * @param {p5} p
@@ -33,12 +33,12 @@ const p5_ray = () => {
     const NUM = 200;
     const particles = [];
 
-    p.setup = function () {
+    p.setup = () => {
       p.createCanvas(cw, ch, p5.P2D, Canvas.canvas);
       // remove width, height from inline
       // since p5.js createCanvas would hard-coding canvas size and CSS (max-width: 100%) would not effective.
-      Canvas.canvas.style.width = null
-      Canvas.canvas.style.height = null
+      Canvas.canvas.style.width = null;
+      Canvas.canvas.style.height = null;
 
       p.frameRate(60);
       p.blendMode(p.ADD);
@@ -50,12 +50,13 @@ const p5_ray = () => {
       }
     };
 
-    p.draw = function () {
+    p.draw = () => {
       p.background(0);
       particles.forEach((particle) => {
         particle.draw(p);
       });
     };
+    return p;
   }
 };
 

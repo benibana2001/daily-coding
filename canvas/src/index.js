@@ -6,6 +6,7 @@ import p5_P2DRender from "./canvases/image_mosaic.js";
 import commandPattern from "./canvases/commandPattern.js";
 import { DisplayDOM } from "./DisplayDOM.js";
 import p5_ray from "./canvases/p5_ray.js";
+import p5_acceleParticle from "./canvases/p5_acceleParticle.js";
 
 const commands = [
   particle,
@@ -13,7 +14,8 @@ const commands = [
   yasumijikan,
   p5_P2DRender,
   commandPattern,
-  p5_ray
+  p5_ray,
+  p5_acceleParticle
 ];
 
 const commandController = new CommandController();

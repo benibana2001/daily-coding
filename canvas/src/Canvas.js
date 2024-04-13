@@ -4,6 +4,8 @@ export default class Canvas {
   static canvas = document.querySelector("#canvas-root canvas");
   static canvasRoot = document.querySelector("#canvas-root");
   static ctx;
+  // p5.jsを使用している場合はインスタンスの参照を保持する
+  static p5Instance = null;
   static defaultCanvasSize = {
     w: 600,
     h: 600,
@@ -20,12 +22,35 @@ export default class Canvas {
     cancelAnimationFrame(this.currentLoopAnimationID);
     this.currentLoopAnimationID = 0;
   }
+
+  /**
+   * p5.jsを使用している場合はインスタンスの参照を保持する
+   * @param {*} p
+   * @returns
+   */
+  static setP5Instance = (p) => {
+    if (!p || !p.hasOwnProperty("setup")) {
+      return;
+    }
+    Canvas.p5Instance = p;
+  };
+
+  /**
+   * p5.jsのループを停止しインスタンスの参照を削除する
+   */
+  static removeP5Instance = () => {
+    if (Canvas.p5Instance) {
+      Canvas.p5Instance.remove();
+      Canvas.p5Instance = null;
+    }
+  };
   static imageLoader = new ImageLoader();
 
   static waitResolveImgs = async () => await Canvas.imageLoader.waitResolveImgs();
   static createImg = (path) => Canvas.imageLoader.createImg(path);
 
   static removeCanvas = () => {
+    Canvas.removeP5Instance();
     /* p5.jsでCreateCanvasするとインラインにstyleの
      * widthが強制的に書かれて他の関数実行に影響を及ぼすため
      * canvasごと削除するのが合理的 */
@@ -39,7 +64,8 @@ export default class Canvas {
     w = Canvas.defaultCanvasSize.w,
     h = Canvas.defaultCanvasSize.h
   ) => {
-    if (!Canvas.canvas) {// Canvasを新規作成
+    if (!Canvas.canvas) {
+      // Canvasを新規作成
       Canvas.canvas = document.createElement("canvas");
       Canvas.canvasRoot.appendChild(Canvas.canvas);
     }
@@ -89,7 +115,8 @@ export default class Canvas {
 
   static drawBG = (color, clear = true) => {
     const canvas = Canvas.ctx.canvas;
-    const clearBG = () => Canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const clearBG = () =>
+      Canvas.ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (clear) clearBG();
     Canvas.ctx.fillStyle = color;
     Canvas.ctx.fillRect(0, 0, canvas.width, canvas.height);

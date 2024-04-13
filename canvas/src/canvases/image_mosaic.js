@@ -1,6 +1,6 @@
 import p5 from 'p5';
 import Canvas from '../Canvas';
-const p5_P2DRender = (c) => {
+const p5_P2DRender = () => {
   let cw = 400;
   let ch = 400;
 
@@ -44,9 +44,10 @@ const p5_P2DRender = (c) => {
         p.resizeCanvas(cw, ch);
       }
     };
+    return p
   };
 
-  new p5(sketch);
+  return new p5(sketch);
 };
 
 export default p5_P2DRender;
