@@ -240,7 +240,7 @@ const yasumijikan = async () => {
       passive: false,
     });
     Canvas.registerCanvasEvent(Canvas.deviceTrigger().end, deviceEndHandler);
-    Canvas.registerEvent("keydown", (e) => {
+    Canvas.addWindowEvent("keydown", (e) => {
       KeyDownHandler(
         {
           right: () => loopAnimation(status.runRight),
@@ -254,7 +254,7 @@ const yasumijikan = async () => {
       );
     });
 
-    Canvas.registerEvent("keyup", (e) => {
+    Canvas.addWindowEvent("keyup", (e) => {
       KeyUpHandler(
         {
           right: () => loopAnimation(status.constantRight),

@@ -24,7 +24,7 @@ class Particle {
     this.acceleration.set(0.0);
   }
   draw() {
-    this.p.fill(this.col)
+    this.p.fill(this.col);
     this.p.ellipse(
       this.location.x,
       this.location.y,
@@ -32,9 +32,9 @@ class Particle {
       this.mass * this.radius * 2
     );
   }
-  addForce(force){
-    force.div(this.mass)
-    this.acceleration.add(force)
+  addForce(force) {
+    force.div(this.mass);
+    this.acceleration.add(force);
   }
   bounceOfWalls() {
     if (this.location.x > cw) {
@@ -59,7 +59,7 @@ const p5_mouseParticle = () => {
   return new p5(sketch);
 
   function sketch(p) {
-const NUM = 100;
+    const NUM = 300;
     const particles = [];
     p.setup = () => {
       p.createCanvas(cw, ch, p5.p2D, Canvas.canvas);
@@ -71,10 +71,13 @@ const NUM = 100;
       for (let i = 0; i < NUM; i++) {
         const newParticle = new Particle(p);
         newParticle.location.set(cw / 2.0, ch / 2.0);
-        newParticle.acceleration.set(
-          p.random(-10.0, 10.0),
-          p.random(-10.0, 10.0)
+        const angle = p.random(p.PI * 2.0);
+        const length = p.random(20);
+        const force = new p5.Vector(
+          p.cos(angle) * length,
+          p.sin(angle) * length
         );
+        newParticle.acceleration.set(force);
         newParticle.gravity.set(0.0, 0.1);
         particles.push(newParticle);
       }
@@ -93,15 +96,18 @@ const NUM = 100;
         particle.bounceOfWalls();
       });
     };
-    p.mouseReleased=()=>{
-      particles.forEach(particle => {
-        const angle = p.random(p.PI * 2.0)
-        const length = p.random(20)
-        const force = new p5.Vector(p.cos(angle) * length , p.sin(angle) * length)
-        particle.addForce(force)
-      })
-    }
-    return p
+    p.mouseReleased = () => {
+      particles.forEach((particle) => {
+        const angle = p.random(p.PI * 2.0);
+        const length = p.random(20);
+        const force = new p5.Vector(
+          p.cos(angle) * length,
+          p.sin(angle) * length
+        );
+        particle.addForce(force);
+      });
+    };
+    return p;
   }
 };
 export default p5_mouseParticle;

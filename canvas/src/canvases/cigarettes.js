@@ -156,8 +156,8 @@ const cigarettes = async () => {
   const attachCharaEvent = () => {
     Canvas.registerCanvasEvent(Canvas.deviceTrigger().start, deviceStartHandler, { passive: false })
     Canvas.registerCanvasEvent(Canvas.deviceTrigger().end, deviceEndHandler)
-    Canvas.registerEvent('keydown', keydownHandler)
-    Canvas.registerEvent('keyup', keyupHandler)
+    Canvas.addWindowEvent('keydown', keydownHandler)
+    Canvas.addWindowEvent('keyup', keyupHandler)
   }
   const removeCharaEvent = () => {
     Canvas.removeCanvasEvents()

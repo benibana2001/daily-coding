@@ -4,20 +4,30 @@ export default class Canvas {
   static canvas = document.querySelector("#canvas-root canvas");
   static canvasRoot = document.querySelector("#canvas-root");
   static ctx;
-  // p5.jsを使用している場合はインスタンスの参照を保持する
-  static p5Instance = null;
   static defaultCanvasSize = {
     w: 600,
     h: 600,
   };
+
+  // p5.jsを使用している場合はインスタンスの参照を保持する
+  static p5Instance = null;
+
   static currentLoopAnimationID = 0;
   static events = [];
   static eventsCanvas = [];
+  static isTouchDevice = "ontouchend" in document;
+  static deviceTrigger = () => ({
+    start: Canvas.isTouchDevice ? "touchstart" : "mousedown",
+    end: Canvas.isTouchDevice ? "touchend" : "mouseup",
+  });
+  static getTouchPosition = (e) => ({
+    x: Canvas.isTouchDevice ? e.changedTouches[0].pageX : e.pageX,
+    y: Canvas.isTouchDevice ? e.changedTouches[0].pageY : e.pageY,
+  });
   static requestAnimFrame = () =>
     window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     ((callback) => window.setTimeout(callback, 1000 / 60));
-
   static cancelCurrentCommand() {
     cancelAnimationFrame(this.currentLoopAnimationID);
     this.currentLoopAnimationID = 0;
@@ -46,7 +56,8 @@ export default class Canvas {
   };
   static imageLoader = new ImageLoader();
 
-  static waitResolveImgs = async () => await Canvas.imageLoader.waitResolveImgs();
+  static waitResolveImgs = async () =>
+    await Canvas.imageLoader.waitResolveImgs();
   static createImg = (path) => Canvas.imageLoader.createImg(path);
 
   static removeCanvas = () => {
@@ -92,10 +103,11 @@ export default class Canvas {
   };
 
   // Add event listner
-  static registerEvent = (type, func, options = null) => {
+  static addWindowEvent = (type, func, options = null) => {
     Canvas.events.push([type, func]);
     window.addEventListener(type, func, options);
   };
+
   static removeEvents = () => {
     for (let e of Canvas.events) {
       window.removeEventListener(e[0], e[1]);
@@ -206,10 +218,10 @@ export default class Canvas {
     (tick) =>
       frameCalc(framesData, frameLength, speed, head, reverse)(tick);
 
-  static deviceTrigger = () => deviceTrigger();
-  static getTouchPosition = (e) => getTouchPosition(e);
 }
 
+// TODO: Asepriteパース用クラスを新規作成
+// 画像とJSONを保持する一つのオブジェクトを作る
 function parseAsperiteJSON(data, toArray = false) {
   const frames = data.frames;
   let ary = [];
@@ -227,7 +239,6 @@ function parseAsperiteJSON(data, toArray = false) {
   return ary;
 }
 
-// TODO: Aseprite の関数群として一つにまとめるか
 const frameCalc =
   (framesData, frameLength, speed, head, reverse = false) =>
   (tick) => {
@@ -237,15 +248,3 @@ const frameCalc =
       if (current < (i + 1) * speed) return framesData[currentFrame];
     }
   };
-
-const deviceTrigger = () => ({
-  start: isTouchDevice ? "touchstart" : "mousedown",
-  end: isTouchDevice ? "touchend" : "mouseup",
-});
-
-const getTouchPosition = (e) => ({
-  x: isTouchDevice ? e.changedTouches[0].pageX : e.pageX,
-  y: isTouchDevice ? e.changedTouches[0].pageY : e.pageY,
-});
-
-const isTouchDevice = "ontouchend" in document;

@@ -54,11 +54,11 @@ const cursor_02 = async () => {
   Canvas.ctx.scale(...scale)
   loopAnimation(status.constantLeft)
   //
-  Canvas.registerEvent('keydown', Canvas.arrowKeydownHandler({
+  Canvas.registerCanvasEvent('keydown', Canvas.arrowKeydownHandler({
     right: () => loopAnimation(status.runRight),
     left: () => loopAnimation(status.runLeft)
   }))
-  Canvas.registerEvent('keyup', Canvas.keyupHandler((e) => {
+  Canvas.registerCanvasEvent('keyup', Canvas.keyupHandler((e) => {
     switch (e.key) {
       case 'ArrowRight':
         loopAnimation(status.constantRight); break
