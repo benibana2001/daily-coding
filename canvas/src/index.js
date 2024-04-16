@@ -8,6 +8,7 @@ import { DisplayDOM } from "./DisplayDOM.js";
 import p5_ray from "./canvases/p5_ray.js";
 import p5_mouseParticle from "./canvases/p5_mouseParticle.js";
 import p5_mouseAttractForce from "./canvases/p5_mouseAttractForce.js";
+// import p5_mouseAttractForceVec3 from "./canvases/p5_mouseAttractForceVec3.js";
 
 const commands = [
   particle,
@@ -17,7 +18,8 @@ const commands = [
   commandPattern,
   p5_ray,
   p5_mouseParticle,
-  p5_mouseAttractForce
+  p5_mouseAttractForce,
+  // p5_mouseAttractForceVec3
 ];
 
 const commandController = new CommandController();
