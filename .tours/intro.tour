@@ -1,0 +1,22 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "intro",
+  "steps": [
+    {
+      "file": "canvas/node_modules/p5/lib/p5.js",
+      "description": "p5.jsのファイルは、Objectで、`{1:[...], 2:[...], 3:[...], .....}`の形で機能を保持している。",
+      "line": 52
+    },
+    {
+      "file": "canvas/node_modules/p5/lib/p5.js",
+      "description": "メインは `1:[]`の中にかかれているっぽ",
+      "line": 54
+    },
+    {
+      "file": "canvas/node_modules/p5/lib/p5.js",
+      "description": "おしり！",
+      "line": 121499
+    }
+  ],
+  "ref": "766fb2699a6d6d5f6fc5a7f0aa8f23634f85a892"
+}

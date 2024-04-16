@@ -37,6 +37,23 @@ class Particle {
     force.div(this.mass); // a = F(force) / m(this.mass)
     this.acceleration.add(force);
   }
+  attract(center, _mass, min, max) {
+    // 重力定数
+    const G = 1.0;
+    // locationとマウスの距離
+    let distance = p5.Vector.dist(center, this.location);
+    // 影響範囲を設定
+    distance = this.p.constrain(distance, min, max);
+    // 引力 F = (m * M) / (r * r)
+    const strength = (G * (this.mass * _mass)) / (distance * distance);
+    // マウスとlocationの間に働くベクトルを各々の位置ベクトルから算出
+    const force = p5.Vector.sub(center, this.location);
+    // 正規化
+    force.normalize();
+    // 引力を割り当て
+    force.mult(strength);
+    this.addForce(force);
+  }
   bounceOfWalls() {
     if (this.location.x > cw) {
       this.location.x = cw;
@@ -56,7 +73,7 @@ class Particle {
     }
   }
 }
-const p5_mouseParticle = () => {
+const p5_mouseAttractForce = () => {
   return new p5(sketch);
 
   function sketch(p) {
@@ -71,14 +88,7 @@ const p5_mouseParticle = () => {
 
       for (let i = 0; i < NUM; i++) {
         const newParticle = new Particle(p);
-        newParticle.location.set(cw / 2.0, ch / 2.0);
-        const angle = p.random(p.PI * 2.0);
-        const length = p.random(20);
-        const force = new p5.Vector(
-          p.cos(angle) * length,
-          p.sin(angle) * length
-        );
-        newParticle.acceleration.set(force);
+        newParticle.location.set(p.random(cw), p.random(ch));
         newParticle.gravity.set(0.0, 0.1);
         particles.push(newParticle);
       }
@@ -97,18 +107,13 @@ const p5_mouseParticle = () => {
         particle.bounceOfWalls();
       });
     };
-    p.mouseReleased = () => {
+    p.mouseDragged = () => {
       particles.forEach((particle) => {
-        const angle = p.random(p.PI * 2.0);
-        const length = p.random(20);
-        const force = new p5.Vector(
-          p.cos(angle) * length,
-          p.sin(angle) * length
-        );
-        particle.addForce(force);
+        const mouseLocation = new p5.Vector(p.mouseX, p.mouseY);
+        particle.attract(mouseLocation, 200, 5, 20);
       });
     };
     return p;
   }
 };
-export default p5_mouseParticle;
+export default p5_mouseAttractForce;
