@@ -1,12 +1,15 @@
-import p5 from 'p5';
-import Canvas from '../Canvas';
-const p5_P2DRender = () => {
+import p5 from "p5";
+import Canvas from "../Canvas";
+const p5_P2DRender = {};
+p5_P2DRender.renderer = "2d";
+p5_P2DRender.name = "p5_P2dRender";
+p5_P2DRender.func = () => {
   let cw = 400;
   let ch = 400;
 
   /**
    *  Run p5.js with 'instance mode'.
-   *  https://p5js.org/reference/#/p5/p5 
+   *  https://p5js.org/reference/#/p5/p5
    */
   const sketch = (p) => {
     const MAX_COUNT = 1;
@@ -44,7 +47,7 @@ const p5_P2DRender = () => {
         p.resizeCanvas(cw, ch);
       }
     };
-    return p
+    return p;
   };
 
   return new p5(sketch);

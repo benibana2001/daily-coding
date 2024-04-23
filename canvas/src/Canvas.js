@@ -72,15 +72,18 @@ export default class Canvas {
   };
 
   static setCanvas = (
-    w = Canvas.defaultCanvasSize.w,
-    h = Canvas.defaultCanvasSize.h
+    w,
+    h,
+    renderer = '2d'
   ) => {
+    w = w || Canvas.defaultCanvasSize.w
+    h = h || Canvas.defaultCanvasSize.h
     if (!Canvas.canvas) {
       // Canvasを新規作成
       Canvas.canvas = document.createElement("canvas");
       Canvas.canvasRoot.appendChild(Canvas.canvas);
     }
-    Canvas.ctx = Canvas.canvas.getContext("2d");
+    Canvas.ctx = Canvas.canvas.getContext(renderer);
     Canvas.canvas.width = w;
     Canvas.canvas.height = h;
   };

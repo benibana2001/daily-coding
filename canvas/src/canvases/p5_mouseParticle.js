@@ -56,7 +56,10 @@ class Particle {
     }
   }
 }
-const p5_mouseParticle = () => {
+const p5_mouseParticle = {};
+p5_mouseParticle.renderer = "2d";
+p5_mouseParticle.name = "p5_mouseParticle";
+p5_mouseParticle.func = () => {
   return new p5(sketch);
 
   function sketch(p) {

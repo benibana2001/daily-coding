@@ -1,6 +1,9 @@
 import Canvas from "../Canvas.js";
 
-const commandPattern = async () => {
+const commandPattern ={};
+commandPattern.name = 'commandPattern';
+commandPattern.renderer = '2d'
+commandPattern.func = async () => {
   Canvas.drawBG(Canvas.randomRGBA(0.2));
 
   class DisplayElement {

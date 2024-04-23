@@ -20,7 +20,10 @@ class Particle {
   }
 }
 
-const p5_ray = () => {
+const p5_ray = {};
+p5_ray.renderer = "2d";
+p5_ray.name = "p5_ray";
+p5_ray.func = () => {
   let cw = 800,
     ch = 400;
 

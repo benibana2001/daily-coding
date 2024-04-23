@@ -1,7 +1,7 @@
 import p5 from "p5";
 import Canvas from "../Canvas";
-let cw = 800,
-  ch = 400;
+let cw = 400,
+  ch = 200;
 
 class ParticleVec3 {
   constructor(p) {
@@ -42,13 +42,13 @@ class ParticleVec3 {
     force.div(this.mass); // a = F(force) / m(this.mass)
     this.acceleration.add(force);
   }
-  attract(center, _mass) {
-    // locationとマウスの距離
+  attract(center, _mass, min, max) {
+    // locationとマウスの距離 float
     let distance = p5.Vector.dist(center, this.location);
     // 影響範囲を設定
-    distance = this.p.constrain(distance, this.min, this.max);
+    distance = this.p.constrain(distance, min, max);
     // 引力 F = (m * M) / (r * r)
-    const strength = (this.G * (this.mass * _mass)) / (distance * distance);
+    const strength = (9 * (this.mass * _mass)) / (distance * distance);
     // マウスとlocationの間に働くベクトルを各々の位置ベクトルから算出
     const force = p5.Vector.sub(center, this.location);
     // 正規化
@@ -84,18 +84,21 @@ class ParticleVec3 {
     }
   }
 }
-const p5_mouseAttractForceVec3 = () => {
+const p5_mouseAttractForceVec3 = {};
+p5_mouseAttractForceVec3.name = 'p5_mouseAttractForceVec3';
+p5_mouseAttractForceVec3.renderer = "webgl"
+p5_mouseAttractForceVec3.func = ()=> {
   return new p5(sketch);
 
   function sketch(p) {
     const NUM = 300;
     const particles = [];
     p.setup = () => {
-      p.createCanvas(cw, ch, p5.p3D, Canvas.canvas);
-      console.log(Canvas.canvas)
+      p.createCanvas(cw, ch, p.WEBGL, Canvas.canvas);
+      console.log(`webglVersion: ${p.webglVersion}`)
       if(Canvas.canvas.style.width) Canvas.canvas.style.width = null;
       if(Canvas.canvas.style.height) Canvas.canvas.style.height = null;
-      p.frameRate(60);
+      p.frameRate(24);
       p.background(0);
 
       for (let i = 0; i < NUM; i++) {
@@ -108,11 +111,11 @@ const p5_mouseAttractForceVec3 = () => {
       }
     };
     p.draw = () => {
+      // 3D空間で描画する際はCanvasのセンターが原点になるため左上に移動する
+      p.translate(- cw / 2, - ch / 2)
       // 半透明の黒で塗りつぶして軌跡を描画する
-      p.fill(0, 31);
+      p.fill(0, 255);
       p.rect(0, 0, cw, ch);
-      // Particleを描画
-      p.fill(255);
       p.noStroke();
 
       particles.forEach((particle) => {
@@ -124,7 +127,7 @@ const p5_mouseAttractForceVec3 = () => {
     p.mouseDragged = () => {
       particles.forEach((particle) => {
         const mouseLocation = new p5.Vector(p.mouseX, p.mouseY);
-        particle.attract(mouseLocation, 200);
+        particle.attract(mouseLocation, 20, 5, 20);
       });
     };
     return p;

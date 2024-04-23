@@ -7,7 +7,10 @@ import img_looftop from "../assets/looftop.png";
 import img_birds from "../assets/birds.png";
 import { KeyDownHandler, KeyUpHandler } from "../KeyboardHandler.js";
 
-const yasumijikan = async () => {
+const yasumijikan = {};
+yasumijikan.renderer = "2d";
+yasumijikan.name = "yasumijikan";
+yasumijikan.func = async () => {
   // prepare images
   const imgPerson = Canvas.createImg(img_person);
   const imgCigar = Canvas.createImg(img_cigar);
@@ -184,7 +187,11 @@ const yasumijikan = async () => {
 
       currentOutput = outputCigar(state.frameSize)(state.velocity);
 
-      Canvas.drawImage(state.image, frameCalc(state)(tickPerson), currentOutput);
+      Canvas.drawImage(
+        state.image,
+        frameCalc(state)(tickPerson),
+        currentOutput
+      );
 
       tickPerson++;
 
@@ -236,9 +243,13 @@ const yasumijikan = async () => {
 
   // Attach Event handler
   const attachCharaEvents = () => {
-    Canvas.registerCanvasEvent(Canvas.deviceTrigger().start, deviceStartHandler, {
-      passive: false,
-    });
+    Canvas.registerCanvasEvent(
+      Canvas.deviceTrigger().start,
+      deviceStartHandler,
+      {
+        passive: false,
+      }
+    );
     Canvas.registerCanvasEvent(Canvas.deviceTrigger().end, deviceEndHandler);
     Canvas.addWindowEvent("keydown", (e) => {
       KeyDownHandler(

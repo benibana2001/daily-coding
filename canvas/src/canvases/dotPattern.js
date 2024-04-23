@@ -1,40 +1,42 @@
-import Canvas from '../Canvas.js'
+import Canvas from "../Canvas.js";
 
-const dotPattern = (c) => {
-  const cw = Canvas.canvas.width
-  const ch = Canvas.canvas.height
+const dotPattern = {};
+dotPattern.renderer = "2d";
+dotPattern.name = "dotPattern";
+dotPattern.func = () => {
+  const cw = Canvas.canvas.width;
+  const ch = Canvas.canvas.height;
   const particle = () => {
     return [
       Math.random() * cw,
       Math.random() * ch,
-      ch > cw ? Math.random() * cw / 5 : Math.random() * ch / 5,
-      Canvas.randomRGBA(Math.random() * 1.0)
-    ]
-  }
+      ch > cw ? (Math.random() * cw) / 5 : (Math.random() * ch) / 5,
+      Canvas.randomRGBA(Math.random() * 1.0),
+    ];
+  };
 
   const particles = () => {
-    let ary = []
+    let ary = [];
     for (let i = 0; i < 30; i++) {
-      ary.push(particle())
+      ary.push(particle());
     }
-    return ary
-  }
+    return ary;
+  };
 
   const drawParticles = () => {
     for (let i = 0, ps = particles(); i < ps.length; i++) {
-      Canvas.drawArc(...ps[i])
+      Canvas.drawArc(...ps[i]);
     }
-  }
+  };
 
   const draw = () => {
-    Canvas.drawBG(Canvas.randomRGBA(0.1))
-    drawParticles()
-  }
+    Canvas.drawBG(Canvas.randomRGBA(0.1));
+    drawParticles();
+  };
 
-  draw()
+  draw();
   // Canvas.canvas.addEventListener('click', () => draw())
-  Canvas.registerCanvasEvent('click', () => draw())
-}
+  Canvas.registerCanvasEvent("click", () => draw());
+};
 
-
-export default dotPattern
+export default dotPattern;

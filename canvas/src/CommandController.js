@@ -6,21 +6,36 @@ export class CommandController {
     this.Canvas = Canvas;
   }
   addCommands(commandArray) {
-    for (const func of commandArray) {
-      const name = func.name;
-      this.commands.set(name, func);
+    for (const command of commandArray) {
+      const name = command.name;
+      this.commands.set(name, {
+        func: command.func,
+        renderer: command.renderer,
+      });
     }
   }
-  execute(name, canvasCtx) {
+  execute(name) {
     Canvas.removeCanvas();
     Canvas.cancelCurrentCommand();
-    Canvas.setCanvas();
 
     const command = this.commands.get(name) || null;
+
     if (command) {
-      const p5Instance = command(canvasCtx);
+      // コマンドのレンダラーを元にCanvasを作成する
+      // webgl | 2d
+      const renderer = command.renderer;
+      if (renderer !== "webgl" && renderer !== "2d") {
+        console.warn('Canvas renderer is not "webgl" or "2d" ');
+        return;
+      }
+      console.log(`renderer: ${renderer}`)
+      Canvas.setCanvas(null, null, renderer);
+
+      // コマンド実行
+      const p5Instance = command.func();
       // p5.jsのイベントループを外から停止できるように参照を渡しておく
-      Canvas.setP5Instance(p5Instance)
+      Canvas.setP5Instance(p5Instance);
+
     } else {
       console.warn("No Command was Executed.");
     }
