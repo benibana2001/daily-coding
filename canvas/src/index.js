@@ -2,7 +2,7 @@ import { CommandController } from "./CommandController.js";
 import particle from "./canvases/particleSnow.js";
 import dotPattern from "./canvases/dotPattern.js";
 import yasumijikan from "./canvases/yasumijikan.js";
-import p5_P2DRender from "./canvases/image_mosaic.js";
+import p5_P2DRender from "./canvases/p5_p2dRender.js";
 import commandPattern from "./canvases/commandPattern.js";
 import { DisplayDOM } from "./DisplayDOM.js";
 import p5_ray from "./canvases/p5_ray.js";
@@ -17,9 +17,9 @@ const commands = [
   yasumijikan,
   p5_P2DRender,
   commandPattern,
-  p5_ray,
-  p5_mouseParticle,
-  p5_mouseAttractForce,
+  // p5_ray,
+  // p5_mouseParticle,
+  // p5_mouseAttractForce,
   // p5_mouseAttractForceVec3
   // p5_perlinNoise
 ];
