@@ -20,8 +20,8 @@ const commands = [
   p5_ray,
   p5_mouseParticle,
   // p5_mouseAttractForce,
-  p5_mouseAttractForceVec3
-  // p5_perlinNoise
+  p5_mouseAttractForceVec3,
+  p5_perlinNoise
 ];
 
 const commandController = new CommandController();
