@@ -10,6 +10,7 @@ import p5_mouseParticle from "./canvases/p5_mouseParticle.js";
 import p5_mouseAttractForce from "./canvases/p5_mouseAttractForce.js";
 import p5_perlinNoise from "./canvases/p5_perlinNoise.js";
 import p5_mouseAttractForceVec3 from "./canvases/p5_mouseAttractForceVec3.js";
+import p5_imgEdit from "./canvases/p5_img.js";
 
 const commands = [
   particle,
@@ -21,7 +22,8 @@ const commands = [
   p5_mouseParticle,
   // p5_mouseAttractForce,
   p5_mouseAttractForceVec3,
-  p5_perlinNoise
+  p5_perlinNoise,
+  p5_imgEdit
 ];
 
 const commandController = new CommandController();

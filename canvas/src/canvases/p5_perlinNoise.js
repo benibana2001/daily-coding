@@ -133,15 +133,11 @@ p5_perlinNoise.func = () => {
       }
 
       p.frameRate(120)
-      // p.background(30, 40, 120)
       p.background(...BG_COLOR)
     };
 
     p.draw = () => {
-      // p.translate(- cw / 2, - ch / 2)
       p.noStroke();
-      // p.fill(0, 9)
-      // p.rect(0, 0, cw , ch)
 
       p.fill(255, 10); 
 
