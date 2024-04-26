@@ -39,6 +39,10 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
+        test: /\.mp4$/,
+        use: ["file-loader"]
+      },
+      {
         test: /\.(gif|png|jpg|eot|wof|woff|woff2|ttf|svg)$/,
         loader: 'url-loader',
         include: [path.resolve(__dirname, 'src/assets')],

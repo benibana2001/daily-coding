@@ -7,10 +7,10 @@ import commandPattern from "./canvases/commandPattern.js";
 import { DisplayDOM } from "./DisplayDOM.js";
 import p5_ray from "./canvases/p5_ray.js";
 import p5_mouseParticle from "./canvases/p5_mouseParticle.js";
-import p5_mouseAttractForce from "./canvases/p5_mouseAttractForce.js";
 import p5_perlinNoise from "./canvases/p5_perlinNoise.js";
 import p5_mouseAttractForceVec3 from "./canvases/p5_mouseAttractForceVec3.js";
 import p5_imgEdit from "./canvases/p5_img.js";
+import p5_video from "./canvases/p5_video.js";
 
 const commands = [
   particle,
@@ -20,10 +20,10 @@ const commands = [
   commandPattern,
   p5_ray,
   p5_mouseParticle,
-  // p5_mouseAttractForce,
   p5_mouseAttractForceVec3,
   p5_perlinNoise,
-  p5_imgEdit
+  p5_imgEdit,
+  p5_video
 ];
 
 const commandController = new CommandController();
